@@ -2,9 +2,8 @@ import 'package:alrwad/appCubit/app_cubit.dart';
 import 'package:alrwad/appCubit/app_states.dart';
 import 'package:alrwad/components/components.dart';
 import 'package:alrwad/modules/aboutUsScreen/aboutUs.dart';
-import 'package:alrwad/modules/categories/categories.dart';
 import 'package:alrwad/modules/contactUsScreen/contactUs.dart';
-import 'package:alrwad/modules/mainService/mainServiceScreen.dart';
+import 'package:alrwad/modules/homePage/home.dart';
 import 'package:alrwad/modules/serviceScreen/serviceScreen.dart';
 import 'package:alrwad/shared/colors.dart';
 import 'package:flutter/material.dart';
@@ -57,7 +56,7 @@ class MyDrawer extends StatelessWidget {
       padding: const EdgeInsets.only(top: 15),
       child: Column(
         children: [
-          menuItem(context, Icons.home, 'الرئيسيه', Categories()),
+          menuItem(context, Icons.home, 'الرئيسيه', HomeScreen()),
           menuItem(context, Icons.support_rounded, 'الخدمات',
               const ServicesScreen()),
           menuItem(context, Icons.phone, 'تواصل معنا', const ContactUsScreen()),
