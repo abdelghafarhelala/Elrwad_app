@@ -3,7 +3,9 @@ import 'package:alrwad/appCubit/app_states.dart';
 import 'package:alrwad/components/components.dart';
 import 'package:alrwad/modules/aboutUsScreen/aboutUs.dart';
 import 'package:alrwad/modules/contactUsScreen/contactUs.dart';
+import 'package:alrwad/modules/contactUsScreenInDrawer/contactUs.dart';
 import 'package:alrwad/modules/homePage/home.dart';
+import 'package:alrwad/modules/layoutScreen/layoutScreen.dart';
 import 'package:alrwad/modules/serviceScreen/serviceScreen.dart';
 import 'package:alrwad/shared/colors.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +19,7 @@ class MyDrawer extends StatelessWidget {
     return BlocConsumer<AppCubit, AppStates>(
       listener: (context, state) {},
       builder: (context, state) {
+        var userData = AppCubit.get(context).profile;
         return Container(
           color: primaryColor,
           width: double.infinity,
@@ -28,19 +31,18 @@ class MyDrawer extends StatelessWidget {
               Container(
                 margin: const EdgeInsets.only(bottom: 10),
                 height: 70,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
-                      image: NetworkImage(
-                          'https://img.freepik.com/free-photo/waist-up-portrait-handsome-serious-unshaven-male-keeps-hands-together-dressed-dark-blue-shirt-has-talk-with-interlocutor-stands-against-white-wall-self-confident-man-freelancer_273609-16320.jpg?w=996&t=st=1648830402~exp=1648831002~hmac=23bb5c012cffe2b975c10240fb7aa2f906cd61fc0e106b73ae52d85af1159554'),
+                      image: NetworkImage(userData!.data!.profilePhotoUrl!),
                     )),
               ),
-              const Text(
-                'User Name',
-                style: TextStyle(color: Colors.white, fontSize: 20),
+              Text(
+                userData.data!.name!,
+                style: const TextStyle(color: Colors.white, fontSize: 20),
               ),
               Text(
-                'example@gmail.com',
+                userData.data!.email!,
                 style: TextStyle(color: Colors.grey[200], fontSize: 14),
               ),
             ],
@@ -56,10 +58,11 @@ class MyDrawer extends StatelessWidget {
       padding: const EdgeInsets.only(top: 15),
       child: Column(
         children: [
-          menuItem(context, Icons.home, 'الرئيسيه', HomeScreen()),
+          menuItem(context, Icons.home, 'الرئيسيه', LayoutScreen()),
           menuItem(context, Icons.support_rounded, 'الخدمات',
               const ServicesScreen()),
-          menuItem(context, Icons.phone, 'تواصل معنا', const ContactUsScreen()),
+          menuItem(context, Icons.phone, 'تواصل معنا',
+              const ContactUsDrawerScreen()),
           menuItem(context, Icons.file_copy_outlined, 'عن التطبيق',
               const AboutUsScreen()),
         ],

@@ -68,7 +68,7 @@ class AppCubit extends Cubit<AppStates> {
   CategoryModel? category;
   void getCategoryData() {
     emit(AppGetCategoriesLoadingState());
-    DioHelper.getData(url: categoriesUrl).then((value) {
+    DioHelper.getDataWithoutToken(url: categoriesUrl).then((value) {
       category = CategoryModel.fromJson(value.data);
       print(category?.data?[0].name);
       emit(AppGetCategoriesSuccessState());
@@ -108,7 +108,6 @@ class AppCubit extends Cubit<AppStates> {
   void getUserData() {
     emit(AppGetUserDataLoadingState());
     DioHelper.getData(url: profileUrl, token: token).then((value) {
-      print(value.data);
       profile = ProfileModel.fromJson(value.data);
       emit(AppGetUserDataSuccessState());
     }).catchError((error) {
@@ -143,7 +142,8 @@ class AppCubit extends Cubit<AppStates> {
   MainServicesModel? services;
   void getMainServicesData() {
     emit(AppGetMainServicesLoadingState());
-    DioHelper.getData(url: mainServicesUrl).then((value) {
+    DioHelper.getDataWithoutToken(url: mainServicesUrl).then((value) {
+      print(value.data);
       services = MainServicesModel.fromJson(value.data);
       // print(category?.data?[0].name);
       emit(AppGetMainServicesSuccessState());
