@@ -1,5 +1,5 @@
 import 'package:alrwad/components/components.dart';
-import 'package:alrwad/modules/categories/categories.dart';
+import 'package:alrwad/modules/layoutScreen/layoutScreen.dart';
 import 'package:alrwad/modules/login/login.dart';
 import 'package:alrwad/modules/register/registerCubit/registerCubit.dart';
 import 'package:alrwad/network/local/cache_Helper.dart';
@@ -31,7 +31,7 @@ class RegisterScreen extends StatelessWidget {
                       key: "token", value: state.model?.success!.token)
                   .then((value) {
                 token = state.model?.success?.token;
-                navigateAndFinish(context, Categories());
+                navigateAndFinish(context, LayoutScreen());
                 print(state.model?.data!.name);
               });
             } else {
@@ -43,7 +43,7 @@ class RegisterScreen extends StatelessWidget {
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(
-              title: Text('حساب جديد'),
+              title: const Text('حساب جديد'),
               centerTitle: true,
             ),
             body: Center(
@@ -61,14 +61,6 @@ class RegisterScreen extends StatelessWidget {
                             'assets/images/logo.jpeg',
                             height: 170,
                           ),
-                          // const SizedBox(
-                          //   height: 15,
-                          // ),
-                          // const Text(
-                          //   'سجل معنا لتري عروضنا المميزه',
-                          //   style: TextStyle(
-                          //       fontSize: 24, fontWeight: FontWeight.bold),
-                          // ),
                           const SizedBox(
                             height: 30,
                           ),
@@ -175,7 +167,7 @@ class RegisterScreen extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text('لديك حساب بالفعل'),
+                              const Text('لديك حساب بالفعل'),
                               TextButton(
                                   onPressed: () {
                                     navigateTo(context, const LoginScreen());

@@ -1,4 +1,5 @@
 const String categoriesUrl = 'categories';
+const String profileUrl = 'profile';
 const String registerUrl = 'register';
 const String loginUrl = 'login';
 const String mainServicesUrl = 'art-min/t/ar/0';

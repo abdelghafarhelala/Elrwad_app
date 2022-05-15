@@ -1,5 +1,6 @@
 import 'package:alrwad/components/components.dart';
 import 'package:alrwad/modules/categories/categories.dart';
+import 'package:alrwad/modules/layoutScreen/layoutScreen.dart';
 
 import 'package:alrwad/modules/login/loginCubit/loginCubit.dart';
 import 'package:alrwad/modules/login/loginCubit/loginStates.dart';
@@ -29,7 +30,7 @@ class LoginScreen extends StatelessWidget {
                       key: "token", value: state.model?.success!.token)
                   .then((value) {
                 token = state.model?.success?.token;
-                navigateAndFinish(context, MainServicesScreen());
+                navigateAndFinish(context, LayoutScreen());
                 print(state.model?.data!.name);
               });
             } else {

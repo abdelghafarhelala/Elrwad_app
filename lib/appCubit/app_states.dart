@@ -10,6 +10,13 @@ class ChangeNavButtomNavState extends AppStates {}
 
 class AppChangeThemState extends AppStates {}
 
+//get user data states
+class AppGetUserDataSuccessState extends AppStates {}
+
+class AppGetUserDataErrorState extends AppStates {}
+
+class AppGetUserDataLoadingState extends AppStates {}
+
 //get categories states
 class AppGetCategoriesLoadingState extends AppStates {}
 

@@ -2,6 +2,8 @@ import 'package:alrwad/models/ContactUsModel/contactUsModel.dart';
 import 'package:alrwad/models/categoryModel/categoryModel.dart';
 import 'package:alrwad/models/doctorsModel/doctorsModel.dart';
 import 'package:alrwad/models/mainServicesModel/mainServicesModel.dart';
+import 'package:alrwad/models/profileModel/profileModel.dart';
+import 'package:alrwad/models/userModel/userModel.dart';
 import 'package:alrwad/modules/aboutUsScreen/aboutUs.dart';
 import 'package:alrwad/modules/contactUsScreen/contactUs.dart';
 import 'package:alrwad/modules/homePage/home.dart';
@@ -10,6 +12,7 @@ import 'package:alrwad/modules/mainService/mainServiceScreen.dart';
 import 'package:alrwad/network/endpoints.dart';
 import 'package:alrwad/network/local/cache_Helper.dart';
 import 'package:alrwad/network/remote/dio_helper.dart';
+import 'package:alrwad/shared/const.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -96,6 +99,20 @@ class AppCubit extends Cubit<AppStates> {
       emit(AppPostContactSuccessState(contact!));
     }).catchError((error) {
       emit(AppPostContactErrorState());
+      print(error.toString());
+    });
+  }
+
+//get user
+  ProfileModel? profile;
+  void getUserData() {
+    emit(AppGetUserDataLoadingState());
+    DioHelper.getData(url: profileUrl, token: token).then((value) {
+      print(value.data);
+      profile = ProfileModel.fromJson(value.data);
+      emit(AppGetUserDataSuccessState());
+    }).catchError((error) {
+      emit(AppGetUserDataErrorState());
       print(error.toString());
     });
   }
