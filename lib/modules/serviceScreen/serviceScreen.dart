@@ -4,7 +4,7 @@ import 'package:alrwad/components/components.dart';
 import 'package:alrwad/models/mainServicesModel/mainServicesModel.dart';
 import 'package:alrwad/modules/categories/categories.dart';
 import 'package:alrwad/modules/myDrawer/myDrawer.dart';
-import 'package:alrwad/modules/serviceDetails/serviceDetails.dart';
+
 import 'package:alrwad/network/endpoints.dart';
 import 'package:alrwad/shared/colors.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
