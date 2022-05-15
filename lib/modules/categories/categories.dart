@@ -67,7 +67,7 @@ class Categories extends StatelessWidget {
                 child: GridView.count(
                   crossAxisCount: 2,
                   shrinkWrap: true,
-                  childAspectRatio: 1 / 1.32,
+                  childAspectRatio: 1 / 1.4,
                   mainAxisSpacing: 1,
                   crossAxisSpacing: 1,
                   padding:
