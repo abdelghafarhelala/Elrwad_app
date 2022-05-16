@@ -1,9 +1,11 @@
 // ignore_for_file: avoid_print
 
+import 'package:alrwad/appCubit/app_cubit.dart';
 import 'package:alrwad/models/userModel/userModel.dart';
 import 'package:alrwad/modules/login/loginCubit/loginStates.dart';
 
 import 'package:alrwad/network/endpoints.dart';
+import 'package:alrwad/network/local/cache_Helper.dart';
 import 'package:alrwad/network/remote/dio_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,10 +26,8 @@ class LoginCubit extends Cubit<LoginStates> {
   }
 
   UserModel? loginModel;
-  void userLogin({
-    required String phone,
-    required String password,
-  }) {
+  void userLogin(
+      {required String phone, required String password, required var context}) {
     emit(LoginLoadingState());
     DioHelper.postData(url: loginUrl, data: {
       'mobile': phone,
@@ -35,8 +35,7 @@ class LoginCubit extends Cubit<LoginStates> {
       'onesignal_id': '1',
     }).then((value) {
       loginModel = UserModel.fromJson(value.data);
-      // print(LoginModel!.data!.name);
-
+      CacheHelper.saveData(key: 'token', value: loginModel!.success!.token);
       emit(LoginSuccessState(loginModel));
     }).catchError((error) {
       print(error.toString());

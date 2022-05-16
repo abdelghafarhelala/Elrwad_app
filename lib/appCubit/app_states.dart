@@ -46,3 +46,10 @@ class AppGetMainServicesSuccessState extends AppStates {}
 class AppGetMainServicesErrorState extends AppStates {}
 
 class AppGetMainServicesLoadingState extends AppStates {}
+
+//post
+class AppPostBookingSuccessState extends AppStates {}
+
+class AppPostBookingErrorState extends AppStates {}
+
+class AppPostBookingLoadingState extends AppStates {}

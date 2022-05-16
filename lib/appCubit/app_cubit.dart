@@ -1,10 +1,13 @@
 import 'package:alrwad/models/ContactUsModel/contactUsModel.dart';
+import 'package:alrwad/models/bookingModel/bookingModel.dart';
 import 'package:alrwad/models/categoryModel/categoryModel.dart';
 import 'package:alrwad/models/doctorsModel/doctorsModel.dart';
 import 'package:alrwad/models/mainServicesModel/mainServicesModel.dart';
 import 'package:alrwad/models/profileModel/profileModel.dart';
 import 'package:alrwad/models/userModel/userModel.dart';
 import 'package:alrwad/modules/aboutUsScreen/aboutUs.dart';
+import 'package:alrwad/modules/bookingScreen%20copy/bookingScreen.dart';
+import 'package:alrwad/modules/bookingScreen/bookingScreen.dart';
 import 'package:alrwad/modules/contactUsScreen/contactUs.dart';
 import 'package:alrwad/modules/homePage/home.dart';
 import 'package:alrwad/modules/mainService/mainServiceScreen.dart';
@@ -29,19 +32,19 @@ class AppCubit extends Cubit<AppStates> {
     const BottomNavigationBarItem(icon: Icon(Icons.apps), label: 'الخدمات'),
     const BottomNavigationBarItem(icon: Icon(Icons.phone), label: 'اتصل بنا'),
     const BottomNavigationBarItem(
-        icon: Icon(Icons.people_alt), label: 'عن التطبيق'),
+        icon: Icon(Icons.post_add_outlined), label: 'الحجز'),
   ];
   List<String> titles = [
     'الرئيسيه',
     'الخدمات',
     'اتصل بنا',
-    'عن التطبيق',
+    'الحجز',
   ];
   List<Widget> appScreens = [
     const HomeScreen(),
     const MainServicesScreen(),
     const ContactUsScreen(),
-    const AboutUsScreen(),
+    BookingScreen(),
   ];
 
   int currentIndex = 0;
@@ -109,6 +112,7 @@ class AppCubit extends Cubit<AppStates> {
     emit(AppGetUserDataLoadingState());
     DioHelper.getData(url: profileUrl, token: token).then((value) {
       profile = ProfileModel.fromJson(value.data);
+      print(profile!.data!.name);
       emit(AppGetUserDataSuccessState());
     }).catchError((error) {
       emit(AppGetUserDataErrorState());
@@ -122,7 +126,7 @@ class AppCubit extends Cubit<AppStates> {
   void getDoctorsData(int? categoryId) {
     emit(AppGetDoctorsLoadingState());
     doctorsData = [];
-    DioHelper.getData(url: doctorsUrl).then((value) {
+    DioHelper.getDataWithoutToken(url: doctorsUrl).then((value) {
       doctors = DoctorsModel.fromJson(value.data);
 
       for (int i = 0; i < doctors!.results!.length; i++) {
@@ -149,6 +153,33 @@ class AppCubit extends Cubit<AppStates> {
       emit(AppGetMainServicesSuccessState());
     }).catchError((error) {
       emit(AppGetMainServicesErrorState());
+      print(error.toString());
+    });
+  }
+
+  //make booking
+  BookingModel? book;
+  void makeBooking({
+    required int categoryId,
+    required int doctorId,
+    required String date,
+    required String workKind,
+    String companyName = '',
+    required String cardNumber,
+  }) {
+    emit(AppPostBookingLoadingState());
+    DioHelper.postData(url: bookingUrl, token: token, data: {
+      'category_id': categoryId,
+      'doctor_id': doctorId,
+      'date': date,
+      'work_kind': companyName,
+      'company_name': workKind,
+      'carneh_num': cardNumber,
+    }).then((value) {
+      book = BookingModel.fromJson(value.data);
+      emit(AppPostBookingSuccessState());
+    }).catchError((error) {
+      emit(AppPostBookingErrorState());
       print(error.toString());
     });
   }

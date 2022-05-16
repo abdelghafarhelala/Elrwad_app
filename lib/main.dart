@@ -1,5 +1,6 @@
 import 'package:alrwad/appCubit/app_cubit.dart';
 import 'package:alrwad/appCubit/app_states.dart';
+import 'package:alrwad/modules/bookingScreen/bookingScreen.dart';
 import 'package:alrwad/modules/categories/categories.dart';
 import 'package:alrwad/modules/doctors/doctors.dart';
 import 'package:alrwad/modules/homePage/home.dart';
@@ -87,7 +88,8 @@ class MyApp extends StatelessWidget {
             darkTheme: darkTheme,
             themeMode:
                 AppCubit.get(context).isDark ? ThemeMode.dark : ThemeMode.light,
-            home: startWidget,
+            // home: startWidget,
+            home: LayoutScreen(),
           );
         },
       ),

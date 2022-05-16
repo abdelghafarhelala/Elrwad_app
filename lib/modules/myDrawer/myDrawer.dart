@@ -2,10 +2,12 @@ import 'package:alrwad/appCubit/app_cubit.dart';
 import 'package:alrwad/appCubit/app_states.dart';
 import 'package:alrwad/components/components.dart';
 import 'package:alrwad/modules/aboutUsScreen/aboutUs.dart';
+import 'package:alrwad/modules/bookingScreen%20copy/bookingScreen.dart';
 import 'package:alrwad/modules/contactUsScreenInDrawer/contactUs.dart';
 import 'package:alrwad/modules/layoutScreen/layoutScreen.dart';
 import 'package:alrwad/modules/serviceScreen/serviceScreen.dart';
 import 'package:alrwad/shared/colors.dart';
+import 'package:alrwad/shared/const.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -32,15 +34,16 @@ class MyDrawer extends StatelessWidget {
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
-                      image: NetworkImage(userData!.data!.profilePhotoUrl!),
+                      image: NetworkImage(userData?.data?.profilePhotoUrl ??
+                          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwnYnwftDUSjsQmLQvMBZ2pwDXhAJiIdfKvg&usqp=CAU'),
                     )),
               ),
               Text(
-                userData.data!.name!,
+                userData?.data?.name ?? 'User Name',
                 style: const TextStyle(color: Colors.white, fontSize: 20),
               ),
               Text(
-                userData.data!.email!,
+                userData?.data?.email ?? 'userName@example.com',
                 style: TextStyle(color: Colors.grey[200], fontSize: 14),
               ),
             ],
@@ -59,10 +62,16 @@ class MyDrawer extends StatelessWidget {
           menuItem(context, Icons.home, 'الرئيسيه', LayoutScreen()),
           menuItem(context, Icons.support_rounded, 'الخدمات',
               const ServicesScreen()),
+          menuItem(context, Icons.post_add, 'حجز ميعاد', BookingScreenDrawer()),
           menuItem(context, Icons.phone, 'تواصل معنا',
               const ContactUsDrawerScreen()),
           menuItem(context, Icons.file_copy_outlined, 'عن التطبيق',
               const AboutUsScreen()),
+          menuItem2(
+            context,
+            Icons.logout,
+            'تسجيل الخروج',
+          ),
         ],
       ),
     );
@@ -96,38 +105,37 @@ class MyDrawer extends StatelessWidget {
     );
   }
 
-//Build menu2 of Drawer to language
-  // Widget menuItem2(
-  //   context,
-  //   IconData icon,
-  //   String text,
-  // ) {
-  //   return Material(
-  //     child: InkWell(
-  //       onTap: () {
-  //         showDialog(
-  //             context: context, builder: (context) => buildDialog(context));
-  //       },
-  //       child: Padding(
-  //         padding: const EdgeInsets.all(15),
-  //         child: Row(
-  //           children: [
-  //             Expanded(child: Icon(icon)),
-  //             Expanded(
-  //                 flex: 3,
-  //                 child: Text(
-  //                   text,
-  //                   style: const TextStyle(
-  //                       color: Colors.black,
-  //                       fontSize: 16,
-  //                       fontWeight: FontWeight.w400),
-  //                 )),
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
+// Build menu2 of Drawer
+  Widget menuItem2(
+    context,
+    IconData icon,
+    String text,
+  ) {
+    return Material(
+      child: InkWell(
+        onTap: () {
+          logOut(context);
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(15),
+          child: Row(
+            children: [
+              Expanded(child: Icon(icon)),
+              Expanded(
+                  flex: 3,
+                  child: Text(
+                    text,
+                    style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400),
+                  )),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
 //Build Dialog of language
 

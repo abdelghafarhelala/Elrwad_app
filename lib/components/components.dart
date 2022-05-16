@@ -47,7 +47,7 @@ Widget defaultTextField({
   bool isSecure = false,
   required TextInputType type,
   var controller,
-  // Function? ontap,
+  Function? ontap,
   // Function? onChange,
 }) =>
     TextFormField(
@@ -68,9 +68,9 @@ Widget defaultTextField({
         return validate!(s);
       },
       controller: controller,
-      // onTap: (){
-      //   ontap!();
-      // },
+      onTap: () {
+        ontap!();
+      },
       // onChanged: (String s){
       //     onChange!(s);
       // },

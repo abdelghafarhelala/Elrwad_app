@@ -1,6 +1,7 @@
 import 'package:alrwad/appCubit/app_cubit.dart';
 import 'package:alrwad/appCubit/app_states.dart';
 import 'package:alrwad/components/components.dart';
+import 'package:alrwad/models/categoryModel/categoryModel.dart';
 import 'package:alrwad/models/mainServicesModel/mainServicesModel.dart';
 import 'package:alrwad/modules/categories/categories.dart';
 import 'package:alrwad/modules/doctors/doctors.dart';
@@ -102,6 +103,7 @@ class HomeScreen extends StatelessWidget {
                             AppCubit.get(context).category?.data?[index].img,
                             AppCubit.get(context).category?.data?[index].name,
                             AppCubit.get(context).category?.data?[index].id,
+                            AppCubit.get(context).category?.data?[index],
                             context),
                         itemCount: AppCubit.get(context).category!.data!.length,
                       ),
@@ -162,7 +164,7 @@ Widget buildTextItem({context, Widget? screen, String? text}) => Row(
       ],
     );
 
-Widget buildServiceItem(Data? data, context) => InkWell(
+Widget buildServiceItem(ServesData? data, context) => InkWell(
       onTap: () {
         if (data!.id == 6) {
           navigateTo(context, Categories());
@@ -201,11 +203,17 @@ Widget buildServiceItem(Data? data, context) => InkWell(
       ),
     );
 
-Widget buildCategoryItem(String? img, String? name, int? id, context) {
+Widget buildCategoryItem(
+    String? img, String? name, int? id, Data? catData, context) {
   return InkWell(
     onTap: () {
       AppCubit.get(context).getDoctorsData(id!);
-      navigateTo(context, DoctorsScreen(catId: id));
+      navigateTo(
+          context,
+          DoctorsScreen(
+            catId: id,
+            catdata: catData,
+          ));
     },
     child: Card(
       shape: RoundedRectangleBorder(

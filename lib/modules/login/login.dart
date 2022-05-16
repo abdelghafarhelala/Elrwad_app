@@ -1,3 +1,4 @@
+import 'package:alrwad/appCubit/app_cubit.dart';
 import 'package:alrwad/components/components.dart';
 import 'package:alrwad/modules/categories/categories.dart';
 import 'package:alrwad/modules/layoutScreen/layoutScreen.dart';
@@ -31,7 +32,8 @@ class LoginScreen extends StatelessWidget {
                   .then((value) {
                 token = state.model?.success?.token;
                 navigateAndFinish(context, LayoutScreen());
-                print(state.model?.data!.name);
+                AppCubit.get(context).getUserData();
+                // print(state.model?.data!.name);
               });
             } else {
               showToast(
@@ -109,7 +111,8 @@ class LoginScreen extends StatelessWidget {
                                   if (formKey.currentState!.validate()) {
                                     LoginCubit.get(context).userLogin(
                                         phone: phoneController.text,
-                                        password: passwordController.text);
+                                        password: passwordController.text,
+                                        context: context);
                                   } else {}
                                 },
                                 text: 'تسجيل الدخول'),

@@ -2,7 +2,7 @@ class MainServicesModel {
   bool? result;
   String? errorMessage;
   String? errorMessageEn;
-  List<Data>? data;
+  List<ServesData>? data;
 
   MainServicesModel(
       {this.result, this.errorMessage, this.errorMessageEn, this.data});
@@ -12,15 +12,15 @@ class MainServicesModel {
     errorMessage = json['error_message'];
     errorMessageEn = json['error_message_en'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <ServesData>[];
       json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
+        data!.add(ServesData.fromJson(v));
       });
     }
   }
 }
 
-class Data {
+class ServesData {
   int? id;
   int? type;
   int? categoryId;
@@ -32,7 +32,7 @@ class Data {
   String? detailsEn;
   int? numViews;
 
-  Data(
+  ServesData(
       {this.id,
       this.type,
       this.categoryId,
@@ -44,7 +44,7 @@ class Data {
       this.detailsEn,
       this.numViews});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  ServesData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     type = json['type'];
     categoryId = json['category_id'];

@@ -56,7 +56,7 @@ class MainServicesScreen extends StatelessWidget {
   }
 }
 
-Widget buildServiceItem2(context, Data data) {
+Widget buildServiceItem2(context, ServesData data) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: Card(

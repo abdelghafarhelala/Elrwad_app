@@ -46,6 +46,25 @@ class DioHelper {
   }) async {
     dio!.options.headers = {
       'lang': lang,
+      'Authorization': 'Bearer ' + token!,
+      'Content-Type': 'application/json',
+    };
+    return await dio!.post(
+      url,
+      queryParameters: query,
+      data: data,
+    );
+  }
+
+  static Future<Response> postDataWithoutToken({
+    required String url,
+    Map<String, dynamic>? query,
+    required Map<String, dynamic> data,
+    String lang = 'en',
+    String? token,
+  }) async {
+    dio!.options.headers = {
+      'lang': lang,
       'Authorization': token ?? '',
       'Content-Type': 'application/json',
     };

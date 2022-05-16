@@ -31,7 +31,7 @@ class Categories extends StatelessWidget {
             ),
           ),
           appBar: AppBar(
-            title: Text('الرئيسيه'),
+            title: Text('التخصصات'),
             actions: [
               const Center(
                 child: Text(
@@ -95,8 +95,15 @@ Widget buildCategoryItem(Data? data, image, name, context) =>
     Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       InkWell(
         onTap: () {
-          AppCubit.get(context).getDoctorsData(data?.id);
-          navigateTo(context, DoctorsScreen(catId: data?.id));
+          AppCubit.get(context).getDoctorsData(
+            data?.id,
+          );
+          navigateTo(
+              context,
+              DoctorsScreen(
+                catId: data?.id,
+                catdata: data,
+              ));
         },
         child: Card(
             elevation: 5,

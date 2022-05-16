@@ -1,6 +1,9 @@
 import 'package:alrwad/appCubit/app_cubit.dart';
 import 'package:alrwad/appCubit/app_states.dart';
+import 'package:alrwad/components/components.dart';
+import 'package:alrwad/models/categoryModel/categoryModel.dart';
 import 'package:alrwad/models/doctorsModel/doctorsModel.dart';
+import 'package:alrwad/modules/bookingScreen/bookingScreen.dart';
 import 'package:alrwad/modules/myDrawer/myDrawer.dart';
 import 'package:alrwad/network/endpoints.dart';
 import 'package:alrwad/shared/colors.dart';
@@ -12,10 +15,12 @@ import 'package:flutter_switch/flutter_switch.dart';
 class DoctorsScreen extends StatelessWidget {
   // const DoctorsScreen({Key? key, this.catId}) : super(key: key);
   final int? catId;
+  final Data? catdata;
   // String userName;
   DoctorsScreen({
     Key? key,
     this.catId,
+    this.catdata,
   }) : super(key: key);
 
   @override
@@ -44,7 +49,7 @@ class DoctorsScreen extends StatelessWidget {
             ),
           ),
           appBar: AppBar(
-            title: Text('الرئيسيه'),
+            title: const Text('الاطباء'),
             actions: [
               const Center(
                 child: Text(
@@ -77,7 +82,10 @@ class DoctorsScreen extends StatelessWidget {
             builder: (context) => ListView.separated(
               itemBuilder: (context, index) {
                 return buildDoctorItem(
-                    context, AppCubit.get(context).doctorsData[index]);
+                  context,
+                  AppCubit.get(context).doctorsData[index],
+                  catdata,
+                );
               },
               itemCount: AppCubit.get(context).doctorsData.length,
               separatorBuilder: (context, index) => const SizedBox(),
@@ -89,58 +97,15 @@ class DoctorsScreen extends StatelessWidget {
   }
 }
 
-Widget buildProductItem(context, Results data) {
-  return InkWell(
-    onTap: () {
-      // navigateTo(context, const ServiceDetails());
-    },
-    child: Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              if (data.img != null)
-                Image(
-                  image: NetworkImage((imagesLink + data.img!)),
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: 120,
-                ),
-              if (data.img == null)
-                const Image(
-                  image: AssetImage('assets/images/doctor2.jpg'),
-                  // fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: 120,
-                ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text(
-                data.name!,
-                style: Theme.of(context).textTheme.bodyText1,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text(
-                data.appointments!,
-                style: Theme.of(context).textTheme.caption,
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
-          ),
-        ),
-      ),
-    ),
-  );
-}
-
-Widget buildDoctorItem(context, Results data) => InkWell(
+Widget buildDoctorItem(context, Results data, Data? cDate) => InkWell(
+      onTap: () {
+        navigateTo(
+            context,
+            BookingScreen(
+              categoryData: cDate,
+              doctorData: data,
+            ));
+      },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Card(
