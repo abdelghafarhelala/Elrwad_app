@@ -34,43 +34,8 @@ class DoctorsScreen extends StatelessWidget {
           fallback: (context) =>
               const Center(child: CircularProgressIndicator()),
           builder: (context) => Scaffold(
-            drawer: Drawer(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    const MyDrawer(),
-                    const MyDrawer().myDrawerList(context),
-                  ],
-                ),
-              ),
-            ),
-            appBar: AppBar(
-              title: const Text('الاطباء'),
-              actions: [
-                const Center(
-                  child: Text(
-                    'الوضع',
-                    style: TextStyle(fontWeight: FontWeight.w500),
-                  ),
-                ),
-                const SizedBox(
-                  width: 8,
-                ),
-                FlutterSwitch(
-                  inactiveColor: Colors.white,
-                  inactiveToggleColor: Colors.grey,
-                  activeColor: primaryColor,
-                  activeText: 'Dark',
-                  height: 25,
-                  width: 50,
-                  activeTextColor: Colors.white,
-                  value: AppCubit.get(context).isDark,
-                  onToggle: (value) {
-                    AppCubit.get(context).changeAppTheme();
-                  },
-                ),
-              ],
-            ),
+            drawer: defaultDrawer(context),
+            appBar: defaultAppBar(context, 'الأطباء', false),
             body: ConditionalBuilder(
               condition: state is! AppGetDoctorsLoadingState,
               fallback: (context) =>

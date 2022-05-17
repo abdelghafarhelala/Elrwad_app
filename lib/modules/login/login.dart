@@ -33,6 +33,8 @@ class LoginScreen extends StatelessWidget {
                 token = state.model?.success?.token;
                 navigateAndFinish(context, LayoutScreen());
                 AppCubit.get(context).getUserData();
+                showToast(
+                    text: 'تم تسجيل الدخول بنجاح', state: ToastStates.success);
                 // print(state.model?.data!.name);
               });
             } else {

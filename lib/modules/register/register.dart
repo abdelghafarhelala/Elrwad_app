@@ -1,3 +1,4 @@
+import 'package:alrwad/appCubit/app_cubit.dart';
 import 'package:alrwad/components/components.dart';
 import 'package:alrwad/modules/layoutScreen/layoutScreen.dart';
 import 'package:alrwad/modules/login/login.dart';
@@ -31,6 +32,9 @@ class RegisterScreen extends StatelessWidget {
                       key: "token", value: state.model?.success!.token)
                   .then((value) {
                 token = state.model?.success?.token;
+                AppCubit.get(context).getUserData();
+                showToast(
+                    text: 'تم تسجيل الدخول بنجاح', state: ToastStates.success);
                 navigateAndFinish(context, LayoutScreen());
                 print(state.model?.data!.name);
               });

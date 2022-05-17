@@ -2,15 +2,15 @@ import 'package:alrwad/appCubit/app_cubit.dart';
 import 'package:alrwad/appCubit/app_states.dart';
 import 'package:alrwad/components/components.dart';
 import 'package:alrwad/modules/aboutUsScreen/aboutUs.dart';
-import 'package:alrwad/modules/bookingScreenDrawer/bookingScreenDrawer.dart';
-import 'package:alrwad/modules/contactUsScreenInDrawer/contactUs.dart';
+
 import 'package:alrwad/modules/layoutScreen/layoutScreen.dart';
 import 'package:alrwad/modules/login/login.dart';
-import 'package:alrwad/modules/serviceScreen/serviceScreen.dart';
+
 import 'package:alrwad/shared/colors.dart';
 import 'package:alrwad/shared/const.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({Key? key}) : super(key: key);
@@ -64,13 +64,19 @@ class MyDrawer extends StatelessWidget {
             menuItem(
                 context, Icons.person, 'تسجيل الدخول', const LoginScreen()),
           menuItem(context, Icons.home, 'الرئيسيه', LayoutScreen()),
-          menuItem(context, Icons.support_rounded, 'الخدمات',
-              const ServicesScreen()),
-          menuItem(context, Icons.post_add, 'حجز ميعاد', BookingScreenDrawer()),
-          menuItem(context, Icons.phone, 'تواصل معنا',
-              const ContactUsDrawerScreen()),
+          menuItem(context, Icons.support_rounded, 'الخدمات', LayoutScreen(),
+              index: 1),
+          menuItem(context, Icons.post_add, 'حجز ميعاد', LayoutScreen(),
+              index: 3),
+          menuItem(context, Icons.phone, 'تواصل معنا', LayoutScreen(),
+              index: 2),
           menuItem(context, Icons.file_copy_outlined, 'عن التطبيق',
               const AboutUsScreen()),
+          menuItem3(
+            context,
+            Icons.brightness_medium,
+            ' الوضع الليلي',
+          ),
           menuItem2(
             context,
             Icons.logout,
@@ -82,11 +88,13 @@ class MyDrawer extends StatelessWidget {
   }
 
 // Build menu of Drawer
-  Widget menuItem(context, IconData icon, String text, Widget widget) {
+  Widget menuItem(context, IconData icon, String text, Widget widget,
+      {int index = 0}) {
     return Material(
       child: InkWell(
         onTap: () {
           navigateTo(context, widget);
+          AppCubit.get(context).currentIndex = index;
         },
         child: Padding(
           padding: const EdgeInsets.all(15),
@@ -141,75 +149,46 @@ class MyDrawer extends StatelessWidget {
     );
   }
 
-//Build Dialog of language
-
-  // Widget buildDialog(context) {
-  //   return Dialog(
-  //     insetAnimationCurve: Curves.linearToEaseOut,
-  //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-  //     child: Container(
-  //       padding: EdgeInsets.all(20),
-  //       height: 300,
-  //       width: 300,
-  //       child: Column(
-  //         mainAxisAlignment: MainAxisAlignment.start,
-  //         children: [
-  //           Text(
-  //             '${getLang(context, 'chooseYourLanguage')}',
-  //             style: const TextStyle(
-  //                 color: Colors.black, fontWeight: FontWeight.w500),
-  //           ),
-  //           const SizedBox(
-  //             height: 80,
-  //           ),
-  //           Row(
-  //             crossAxisAlignment: CrossAxisAlignment.center,
-  //             children: [
-  //               Expanded(
-  //                 child: MaterialButton(
-  //                   onPressed: () {
-  //                     AppCubit.get(context).changeLang();
-  //                   },
-  //                   color: primaryColor,
-  //                   textColor: Colors.white,
-  //                   child: Text('${getLang(context, 'arabic')}'),
-  //                 ),
-  //               ),
-  //               const SizedBox(
-  //                 width: 10,
-  //               ),
-  //               Expanded(
-  //                 child: MaterialButton(
-  //                   onPressed: () {
-  //                     AppCubit.get(context).changeLang();
-  //                   },
-  //                   color: primaryColor,
-  //                   textColor: Colors.white,
-  //                   child: Text('${getLang(context, 'english')}'),
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //           const SizedBox(
-  //             height: 30,
-  //           ),
-  //           Row(
-  //             children: [
-  //               Expanded(
-  //                 child: MaterialButton(
-  //                   onPressed: () {
-  //                     navigateAndFinish(context, HomePage());
-  //                   },
-  //                   textColor: Colors.white,
-  //                   color: primaryColor,
-  //                   child: Text('${getLang(context, 'start')}'),
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
+  Widget menuItem3(
+    context,
+    IconData icon,
+    String text,
+  ) {
+    return Material(
+      child: InkWell(
+        onTap: () {},
+        child: Padding(
+          padding: const EdgeInsets.all(15),
+          child: Row(
+            children: [
+              Expanded(child: Icon(icon)),
+              Expanded(
+                  flex: 3,
+                  child: Text(
+                    text,
+                    style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400),
+                  )),
+              FlutterSwitch(
+                inactiveColor: Colors.white,
+                inactiveToggleColor: Colors.grey,
+                activeColor: primaryColor,
+                activeText: 'Dark',
+                height: 25,
+                width: 60,
+                inactiveSwitchBorder: Border.all(color: Colors.black),
+                activeTextColor: Colors.white,
+                value: AppCubit.get(context).isDark,
+                onToggle: (value) {
+                  AppCubit.get(context).changeAppTheme();
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }

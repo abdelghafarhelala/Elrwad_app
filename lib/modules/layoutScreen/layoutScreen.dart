@@ -1,5 +1,6 @@
 import 'package:alrwad/appCubit/app_cubit.dart';
 import 'package:alrwad/appCubit/app_states.dart';
+import 'package:alrwad/components/components.dart';
 import 'package:alrwad/modules/myDrawer/myDrawer.dart';
 import 'package:alrwad/shared/colors.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
@@ -16,43 +17,9 @@ class LayoutScreen extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         return Scaffold(
-          drawer: Drawer(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  const MyDrawer(),
-                  const MyDrawer().myDrawerList(context),
-                ],
-              ),
-            ),
-          ),
-          appBar: AppBar(
-            title: Text(cubit.titles[cubit.currentIndex]),
-            actions: [
-              const Center(
-                child: Text(
-                  ' الوضع الليلي',
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                ),
-              ),
-              const SizedBox(
-                width: 8,
-              ),
-              FlutterSwitch(
-                inactiveColor: Colors.white,
-                inactiveToggleColor: Colors.grey,
-                activeColor: primaryColor,
-                activeText: 'Dark',
-                height: 25,
-                width: 50,
-                activeTextColor: Colors.white,
-                value: AppCubit.get(context).isDark,
-                onToggle: (value) {
-                  AppCubit.get(context).changeAppTheme();
-                },
-              ),
-            ],
-          ),
+          drawer: defaultDrawer(context),
+          appBar:
+              defaultAppBar(context, cubit.titles[cubit.currentIndex], true),
           body: ConditionalBuilder(
               condition: state is! AppGetMainServicesLoadingState &&
                   state is! AppGetMainServicesLoadingState,

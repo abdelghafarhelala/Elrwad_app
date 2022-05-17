@@ -20,43 +20,8 @@ class Categories extends StatelessWidget {
         var data = AppCubit.get(context).category;
 
         return Scaffold(
-          drawer: Drawer(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  const MyDrawer(),
-                  const MyDrawer().myDrawerList(context),
-                ],
-              ),
-            ),
-          ),
-          appBar: AppBar(
-            title: Text('التخصصات'),
-            actions: [
-              const Center(
-                child: Text(
-                  'الوضع',
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                ),
-              ),
-              const SizedBox(
-                width: 8,
-              ),
-              FlutterSwitch(
-                inactiveColor: Colors.white,
-                inactiveToggleColor: Colors.grey,
-                activeColor: primaryColor,
-                activeText: 'Dark',
-                height: 25,
-                width: 50,
-                activeTextColor: Colors.white,
-                value: AppCubit.get(context).isDark,
-                onToggle: (value) {
-                  AppCubit.get(context).changeAppTheme();
-                },
-              ),
-            ],
-          ),
+          drawer: defaultDrawer(context),
+          appBar: defaultAppBar(context, 'التخصصات', false),
           body: ConditionalBuilder(
             condition: state is! AppGetCategoriesLoadingState &&
                 AppCubit.get(context).categoryLength > 0,
@@ -75,12 +40,12 @@ class Categories extends StatelessWidget {
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                   physics: const NeverScrollableScrollPhysics(),
                   children: List.generate(
-                      AppCubit.get(context).category!.data!.length,
+                      AppCubit.get(context).categoryLength,
                       (index) => (buildCategoryItem(
                           data!.data?[index],
                           data.data?[index].img ??
                               '2022_03_23_01_53_38_amrad-alklb.jpg',
-                          AppCubit.get(context).categoryLength,
+                          AppCubit.get(context).category?.data?[index].name,
                           context))),
                 ),
               ),

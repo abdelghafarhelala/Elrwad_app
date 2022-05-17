@@ -1,7 +1,8 @@
 import 'package:alrwad/appCubit/app_cubit.dart';
 import 'package:alrwad/appCubit/app_states.dart';
 import 'package:alrwad/components/components.dart';
-import 'package:alrwad/modules/myDrawer/myDrawer.dart';
+
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_social_button/flutter_social_button.dart';
@@ -16,11 +17,15 @@ class ContactUsScreen extends StatelessWidget {
         if (state is AppPostContactSuccessState) {
           showToast(text: state.model.errorMessage, state: ToastStates.success);
         }
+        elseif(AppPostContactErrorState) {
+          showToast(
+              text: 'لم يتم ارسال البيانات برجاء المحاوله مره اخري',
+              state: ToastStates.error);
+        }
       },
       builder: (context, state) {
         var emailController = TextEditingController();
         var nameController = TextEditingController();
-        var messageController = TextEditingController();
         var phoneController = TextEditingController();
         var detailsController = TextEditingController();
 
@@ -56,7 +61,7 @@ class ContactUsScreen extends StatelessWidget {
                           context: context,
                           type: TextInputType.text),
                       const SizedBox(
-                        height: 20,
+                        height: 15,
                       ),
                       defaultTextField(
                           lable: 'الهاتف',
@@ -68,9 +73,9 @@ class ContactUsScreen extends StatelessWidget {
                             }
                           },
                           context: context,
-                          type: TextInputType.text),
+                          type: TextInputType.phone),
                       const SizedBox(
-                        height: 20,
+                        height: 15,
                       ),
                       defaultTextField(
                           lable: 'البريد الالكتروني',
@@ -84,46 +89,37 @@ class ContactUsScreen extends StatelessWidget {
                           context: context,
                           type: TextInputType.emailAddress),
                       const SizedBox(
-                        height: 20,
-                      ),
-                      defaultTextField(
-                          lable: 'رسالتك',
-                          controller: messageController,
-                          prefix: Icons.message_outlined,
-                          validate: (String value) {
-                            if (value.isEmpty) {
-                              return 'يجب ان تدخل رسالتك';
-                            }
-                          },
-                          context: context,
-                          type: TextInputType.text),
-                      const SizedBox(
-                        height: 20,
+                        height: 15,
                       ),
                       TextFormField(
                         controller: detailsController,
                         maxLines: 5,
                         decoration: const InputDecoration(
-                          hintText: 'معلومات اضافيه',
+                          hintText: 'رسالتك',
                         ),
                       ),
                       const SizedBox(
-                        height: 20,
+                        height: 15,
                       ),
-                      defaultButton(
-                          onPress: () {
-                            if (formKey.currentState!.validate()) {
-                              AppCubit.get(context).contactUsData(
-                                  message: messageController.text,
+                      ConditionalBuilder(
+                        condition: state is! AppPostContactLoadingState,
+                        fallback: (context) =>
+                            const Center(child: LinearProgressIndicator()),
+                        builder: (context) => defaultButton(
+                            onPress: () {
+                              if (formKey.currentState!.validate()) {
+                                AppCubit.get(context).contactUsData(
+                                  message: detailsController.text,
                                   email: emailController.text,
                                   name: nameController.text,
                                   phone: phoneController.text,
-                                  details: detailsController.text);
-                            } else {}
-                          },
-                          text: 'ارسال'),
+                                );
+                              } else {}
+                            },
+                            text: 'ارسال'),
+                      ),
                       const SizedBox(
-                        height: 25,
+                        height: 20,
                       ),
                       Row(
                         children: [

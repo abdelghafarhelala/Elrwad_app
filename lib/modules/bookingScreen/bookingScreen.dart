@@ -75,7 +75,7 @@ class _BookingScreenState extends State<BookingScreen> {
                     ),
                     TextFormField(
                       controller: TextEditingController(
-                          text: categoryData?.name ?? 'يجب ان تختار التخصص'),
+                          text: categoryData?.name ?? 'لم تختار التخصص'),
                       enabled: false,
                     ),
                     const SizedBox(
@@ -83,7 +83,7 @@ class _BookingScreenState extends State<BookingScreen> {
                     ),
                     TextFormField(
                       controller: TextEditingController(
-                          text: doctorData?.name ?? 'يجب ان تختار الطبيب'),
+                          text: doctorData?.name ?? 'لم تختار الطبيب'),
                       enabled: false,
                     ),
                     const SizedBox(
@@ -230,8 +230,8 @@ class _BookingScreenState extends State<BookingScreen> {
                           )
                         ],
                       ),
-                    if (token != null && (categoryData?.id == null) ||
-                        doctorData?.id == null)
+                    if (token != null &&
+                        (categoryData?.id == null || doctorData?.id == null))
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

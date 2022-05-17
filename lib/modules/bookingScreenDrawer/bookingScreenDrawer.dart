@@ -57,43 +57,8 @@ class _BookingScreenDrawerState extends State<BookingScreenDrawer> {
         print(AppCubit.get(context).doctorsData.length);
 
         return Scaffold(
-          drawer: Drawer(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  const MyDrawer(),
-                  const MyDrawer().myDrawerList(context),
-                ],
-              ),
-            ),
-          ),
-          appBar: AppBar(
-            title: const Text('الحجز'),
-            actions: [
-              const Center(
-                child: Text(
-                  'الوضع',
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                ),
-              ),
-              const SizedBox(
-                width: 8,
-              ),
-              FlutterSwitch(
-                inactiveColor: Colors.white,
-                inactiveToggleColor: Colors.grey,
-                activeColor: primaryColor,
-                activeText: 'Dark',
-                height: 25,
-                width: 50,
-                activeTextColor: Colors.white,
-                value: AppCubit.get(context).isDark,
-                onToggle: (value) {
-                  AppCubit.get(context).changeAppTheme();
-                },
-              ),
-            ],
-          ),
+          drawer: defaultDrawer(context),
+          appBar: defaultAppBar(context, 'الحجز', false),
           body: Center(
             child: SingleChildScrollView(
               child: Padding(
@@ -112,7 +77,7 @@ class _BookingScreenDrawerState extends State<BookingScreenDrawer> {
                       ),
                       TextFormField(
                         controller: TextEditingController(
-                            text: categoryData?.name ?? 'يجب ان تختار التخصص'),
+                            text: categoryData?.name ?? 'لم تختار التخصص'),
                         enabled: false,
                       ),
                       const SizedBox(
@@ -120,7 +85,7 @@ class _BookingScreenDrawerState extends State<BookingScreenDrawer> {
                       ),
                       TextFormField(
                         controller: TextEditingController(
-                            text: doctorData?.name ?? 'يجب ان تختار الطبيب'),
+                            text: doctorData?.name ?? 'لم تختار الطبيب'),
                         enabled: false,
                       ),
                       const SizedBox(
@@ -267,8 +232,8 @@ class _BookingScreenDrawerState extends State<BookingScreenDrawer> {
                             )
                           ],
                         ),
-                      if (token != null && (categoryData?.id == null) ||
-                          doctorData?.id == null)
+                      if (token != null &&
+                          (categoryData?.id == null || doctorData?.id == null))
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [

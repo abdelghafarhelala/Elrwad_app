@@ -1,5 +1,9 @@
+import 'package:alrwad/appCubit/app_cubit.dart';
+import 'package:alrwad/modules/myDrawer/myDrawer.dart';
 import 'package:alrwad/shared/colors.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 void navigateTo(context, widget) => Navigator.push(
@@ -87,6 +91,7 @@ void showToast({@required String? text, @required ToastStates? state}) =>
         fontSize: 17.0);
 
 enum ToastStates { success, error, Warrnaing }
+
 Color? color;
 Color? toastColor(ToastStates state) {
   switch (state) {
@@ -102,3 +107,26 @@ Color? toastColor(ToastStates state) {
   }
   return color;
 }
+
+Widget defaultDrawer(context) => Drawer(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            const MyDrawer(),
+            const MyDrawer().myDrawerList(context),
+          ],
+        ),
+      ),
+    );
+
+PreferredSizeWidget defaultAppBar(context, String title, isFirst) => AppBar(
+      title: Text(title),
+      actions: [
+        if (!isFirst)
+          IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.arrow_forward))
+      ],
+    );

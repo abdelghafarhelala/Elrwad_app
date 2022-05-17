@@ -5,7 +5,7 @@ import 'package:alrwad/models/categoryModel/categoryModel.dart';
 import 'package:alrwad/models/mainServicesModel/mainServicesModel.dart';
 import 'package:alrwad/modules/categories/categories.dart';
 import 'package:alrwad/modules/doctors/doctors.dart';
-import 'package:alrwad/modules/serviceScreen/serviceScreen.dart';
+import 'package:alrwad/modules/layoutScreen/layoutScreen.dart';
 import 'package:alrwad/network/endpoints.dart';
 import 'package:alrwad/shared/colors.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -69,7 +69,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                       buildTextItem(
                           context: context,
-                          screen: const ServicesScreen(),
+                          screen: LayoutScreen(),
                           text: 'خدمات قد تفيدك'),
                       const SizedBox(height: 10),
                       SizedBox(
@@ -156,7 +156,8 @@ Widget buildSliderItem() => Card(
       ),
     );
 
-Widget buildTextItem({context, Widget? screen, String? text}) => Row(
+Widget buildTextItem({context, Widget? screen, String? text, int index = 1}) =>
+    Row(
       children: [
         Text(
           text!,
@@ -165,6 +166,7 @@ Widget buildTextItem({context, Widget? screen, String? text}) => Row(
         const Spacer(),
         TextButton(
           onPressed: () {
+            AppCubit.get(context).currentIndex = index;
             navigateTo(context, screen);
           },
           child: Text(

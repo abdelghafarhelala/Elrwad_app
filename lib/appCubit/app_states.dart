@@ -34,6 +34,8 @@ class AppPostContactSuccessState extends AppStates {
 
 class AppPostContactErrorState extends AppStates {}
 
+class AppPostContactLoadingState extends AppStates {}
+
 //get doctors states
 class AppGetDoctorsSuccessState extends AppStates {}
 
