@@ -19,7 +19,7 @@ import 'app_states.dart';
 class AppCubit extends Cubit<AppStates> {
   AppCubit() : super(AppInitialState());
   static AppCubit get(context) => BlocProvider.of(context);
-
+  bool isFirst = true;
   List<BottomNavigationBarItem> buttomItems = [
     const BottomNavigationBarItem(icon: Icon(Icons.home), label: 'الرئيسيه'),
     const BottomNavigationBarItem(icon: Icon(Icons.apps), label: 'الخدمات'),
@@ -83,15 +83,16 @@ class AppCubit extends Cubit<AppStates> {
     required String phone,
     required String email,
     required String message,
-    String? details,
   }) {
+    emit(AppPostContactLoadingState());
     DioHelper.postDataWithoutToken(url: contactUsUrl, data: {
       'name': name,
       'phone': phone,
       'email': email,
-      'subject': details,
-      'message': message
+      'subject': message,
+      'message': 'a'
     }).then((value) {
+      print(value.data);
       contact = contactUsModel.fromJson(value.data);
       print(contact?.errorMessage);
       emit(AppPostContactSuccessState(contact!));
@@ -100,6 +101,22 @@ class AppCubit extends Cubit<AppStates> {
       print(error.toString());
     });
   }
+  // void userLogin(
+  //     {required String phone, required String password, required var context}) {
+  //   emit(LoginLoadingState());
+  //   DioHelper.postDataWithoutToken(url: loginUrl, data: {
+  //     'mobile': phone,
+  //     'password': password,
+  //     'onesignal_id': '1',
+  //   }).then((value) {
+  //     loginModel = UserModel.fromJson(value.data);
+  //     CacheHelper.saveData(key: 'token', value: loginModel!.success!.token);
+  //     emit(LoginSuccessState(loginModel));
+  //   }).catchError((error) {
+  //     print(error.toString());
+  //     emit(LoginErrorState());
+  //   });
+  // }
 
 //get user
 
