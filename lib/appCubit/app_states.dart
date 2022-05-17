@@ -1,4 +1,5 @@
 import 'package:alrwad/models/ContactUsModel/contactUsModel.dart';
+import 'package:alrwad/models/bookingModel/bookingModel.dart';
 
 abstract class AppStates {}
 
@@ -47,8 +48,12 @@ class AppGetMainServicesErrorState extends AppStates {}
 
 class AppGetMainServicesLoadingState extends AppStates {}
 
-//post
-class AppPostBookingSuccessState extends AppStates {}
+//post booking
+class AppPostBookingSuccessState extends AppStates {
+  final BookingModel model;
+
+  AppPostBookingSuccessState(this.model);
+}
 
 class AppPostBookingErrorState extends AppStates {}
 

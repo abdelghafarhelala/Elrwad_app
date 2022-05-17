@@ -32,7 +32,9 @@ class HomeScreen extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: ConditionalBuilder(
               condition: state is! AppGetMainServicesLoadingState &&
-                  state is! AppGetMainServicesLoadingState,
+                  state is! AppGetMainServicesLoadingState &&
+                  AppCubit.get(context).categoryLength > 0 &&
+                  AppCubit.get(context).serviceLength > 0,
               fallback: (context) =>
                   const Center(child: CircularProgressIndicator()),
               builder: (context) {
@@ -72,18 +74,23 @@ class HomeScreen extends StatelessWidget {
                       const SizedBox(height: 10),
                       SizedBox(
                         height: 220,
-                        child: ListView.separated(
-                          shrinkWrap: true,
-                          physics: const BouncingScrollPhysics(),
-                          scrollDirection: Axis.horizontal,
-                          separatorBuilder: (context, index) => const SizedBox(
-                            width: 5,
+                        child: ConditionalBuilder(
+                          condition: AppCubit.get(context).serviceLength > 0,
+                          fallback: (context) =>
+                              const Center(child: CircularProgressIndicator()),
+                          builder: (context) => ListView.separated(
+                            shrinkWrap: true,
+                            physics: const BouncingScrollPhysics(),
+                            scrollDirection: Axis.horizontal,
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(
+                              width: 5,
+                            ),
+                            itemBuilder: (context, index) => buildServiceItem(
+                                AppCubit.get(context).services?.data?[index],
+                                context),
+                            itemCount: AppCubit.get(context).serviceLength,
                           ),
-                          itemBuilder: (context, index) => buildServiceItem(
-                              AppCubit.get(context).services?.data?[index],
-                              context),
-                          itemCount:
-                              AppCubit.get(context).services!.data!.length,
                         ),
                       ),
                       const SizedBox(
@@ -93,19 +100,24 @@ class HomeScreen extends StatelessWidget {
                           context: context,
                           screen: Categories(),
                           text: 'التخصصات المتاحه'),
-                      ListView.separated(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        separatorBuilder: (context, index) => const SizedBox(
-                          height: 10,
+                      ConditionalBuilder(
+                        condition: AppCubit.get(context).categoryLength > 0,
+                        fallback: (context) =>
+                            const Center(child: CircularProgressIndicator()),
+                        builder: (context) => ListView.separated(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          separatorBuilder: (context, index) => const SizedBox(
+                            height: 10,
+                          ),
+                          itemBuilder: (context, index) => buildCategoryItem(
+                              AppCubit.get(context).category?.data?[index].img,
+                              AppCubit.get(context).category?.data?[index].name,
+                              AppCubit.get(context).category?.data?[index].id,
+                              AppCubit.get(context).category?.data?[index],
+                              context),
+                          itemCount: AppCubit.get(context).categoryLength,
                         ),
-                        itemBuilder: (context, index) => buildCategoryItem(
-                            AppCubit.get(context).category?.data?[index].img,
-                            AppCubit.get(context).category?.data?[index].name,
-                            AppCubit.get(context).category?.data?[index].id,
-                            AppCubit.get(context).category?.data?[index],
-                            context),
-                        itemCount: AppCubit.get(context).category!.data!.length,
                       ),
                     ],
                   ),

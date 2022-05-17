@@ -4,23 +4,16 @@ import 'package:alrwad/models/categoryModel/categoryModel.dart';
 import 'package:alrwad/models/doctorsModel/doctorsModel.dart';
 import 'package:alrwad/models/mainServicesModel/mainServicesModel.dart';
 import 'package:alrwad/models/profileModel/profileModel.dart';
-import 'package:alrwad/models/userModel/userModel.dart';
-import 'package:alrwad/modules/aboutUsScreen/aboutUs.dart';
-import 'package:alrwad/modules/bookingScreen%20copy/bookingScreen.dart';
 import 'package:alrwad/modules/bookingScreen/bookingScreen.dart';
 import 'package:alrwad/modules/contactUsScreen/contactUs.dart';
 import 'package:alrwad/modules/homePage/home.dart';
 import 'package:alrwad/modules/mainService/mainServiceScreen.dart';
-
 import 'package:alrwad/network/endpoints.dart';
 import 'package:alrwad/network/local/cache_Helper.dart';
 import 'package:alrwad/network/remote/dio_helper.dart';
 import 'package:alrwad/shared/const.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'app_states.dart';
 
 class AppCubit extends Cubit<AppStates> {
@@ -68,11 +61,13 @@ class AppCubit extends Cubit<AppStates> {
   }
 
 //get all categories
+  int categoryLength = 0;
   CategoryModel? category;
   void getCategoryData() {
     emit(AppGetCategoriesLoadingState());
     DioHelper.getDataWithoutToken(url: categoriesUrl).then((value) {
       category = CategoryModel.fromJson(value.data);
+      categoryLength = category!.data!.length;
       print(category?.data?[0].name);
       emit(AppGetCategoriesSuccessState());
     }).catchError((error) {
@@ -90,7 +85,7 @@ class AppCubit extends Cubit<AppStates> {
     required String message,
     String? details,
   }) {
-    DioHelper.postData(url: contactUsUrl, data: {
+    DioHelper.postDataWithoutToken(url: contactUsUrl, data: {
       'name': name,
       'phone': phone,
       'email': email,
@@ -107,6 +102,7 @@ class AppCubit extends Cubit<AppStates> {
   }
 
 //get user
+
   ProfileModel? profile;
   void getUserData() {
     emit(AppGetUserDataLoadingState());
@@ -121,6 +117,7 @@ class AppCubit extends Cubit<AppStates> {
   }
 
 //get all doctors
+  int doctorsLength = 0;
   DoctorsModel? doctors;
   List doctorsData = [];
   void getDoctorsData(int? categoryId) {
@@ -134,6 +131,7 @@ class AppCubit extends Cubit<AppStates> {
           doctorsData.add(doctors!.results![i]);
         }
       }
+      doctorsLength = doctors!.results!.length;
       print(doctorsData.length);
       emit(AppGetDoctorsSuccessState());
     }).catchError((error) {
@@ -144,12 +142,14 @@ class AppCubit extends Cubit<AppStates> {
 
   //get main services
   MainServicesModel? services;
+  int serviceLength = 0;
   void getMainServicesData() {
     emit(AppGetMainServicesLoadingState());
     DioHelper.getDataWithoutToken(url: mainServicesUrl).then((value) {
       print(value.data);
       services = MainServicesModel.fromJson(value.data);
       // print(category?.data?[0].name);
+      serviceLength = services!.data!.length;
       emit(AppGetMainServicesSuccessState());
     }).catchError((error) {
       emit(AppGetMainServicesErrorState());
@@ -172,12 +172,13 @@ class AppCubit extends Cubit<AppStates> {
       'category_id': categoryId,
       'doctor_id': doctorId,
       'date': date,
-      'work_kind': companyName,
-      'company_name': workKind,
+      'work_kind': workKind,
+      'company_name': companyName,
       'carneh_num': cardNumber,
     }).then((value) {
       book = BookingModel.fromJson(value.data);
-      emit(AppPostBookingSuccessState());
+      emit(AppPostBookingSuccessState(book!));
+      print(book!.success);
     }).catchError((error) {
       emit(AppPostBookingErrorState());
       print(error.toString());

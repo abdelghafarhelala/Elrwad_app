@@ -3,8 +3,7 @@ import 'package:alrwad/appCubit/app_states.dart';
 import 'package:alrwad/components/components.dart';
 import 'package:alrwad/models/categoryModel/categoryModel.dart';
 import 'package:alrwad/models/doctorsModel/doctorsModel.dart';
-import 'package:alrwad/modules/bookingScreen%20copy/bookingScreen.dart';
-import 'package:alrwad/modules/bookingScreen/bookingScreen.dart';
+import 'package:alrwad/modules/bookingScreenDrawer/bookingScreenDrawer.dart';
 import 'package:alrwad/modules/myDrawer/myDrawer.dart';
 import 'package:alrwad/network/endpoints.dart';
 import 'package:alrwad/shared/colors.dart';
@@ -29,67 +28,64 @@ class DoctorsScreen extends StatelessWidget {
     return BlocConsumer<AppCubit, AppStates>(
       listener: (context, state) {},
       builder: (context, state) {
-        var data = AppCubit.get(context).doctors;
-        // List doctors = [];
-        // data!.results!.forEach((element) {
-        //   if (element.categoryId == catId) {
-        //     doctors.addAll(element.);
-        //   }
-        // });
-        print(AppCubit.get(context).doctorsData.length);
-
-        return Scaffold(
-          drawer: Drawer(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  const MyDrawer(),
-                  const MyDrawer().myDrawerList(context),
-                ],
-              ),
-            ),
-          ),
-          appBar: AppBar(
-            title: const Text('الاطباء'),
-            actions: [
-              const Center(
-                child: Text(
-                  'الوضع',
-                  style: TextStyle(fontWeight: FontWeight.w500),
+        return ConditionalBuilder(
+          condition: state is! AppGetDoctorsLoadingState &&
+              AppCubit.get(context).doctorsLength > 0,
+          fallback: (context) =>
+              const Center(child: CircularProgressIndicator()),
+          builder: (context) => Scaffold(
+            drawer: Drawer(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const MyDrawer(),
+                    const MyDrawer().myDrawerList(context),
+                  ],
                 ),
               ),
-              const SizedBox(
-                width: 8,
-              ),
-              FlutterSwitch(
-                inactiveColor: Colors.white,
-                inactiveToggleColor: Colors.grey,
-                activeColor: primaryColor,
-                activeText: 'Dark',
-                height: 25,
-                width: 50,
-                activeTextColor: Colors.white,
-                value: AppCubit.get(context).isDark,
-                onToggle: (value) {
-                  AppCubit.get(context).changeAppTheme();
+            ),
+            appBar: AppBar(
+              title: const Text('الاطباء'),
+              actions: [
+                const Center(
+                  child: Text(
+                    'الوضع',
+                    style: TextStyle(fontWeight: FontWeight.w500),
+                  ),
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
+                FlutterSwitch(
+                  inactiveColor: Colors.white,
+                  inactiveToggleColor: Colors.grey,
+                  activeColor: primaryColor,
+                  activeText: 'Dark',
+                  height: 25,
+                  width: 50,
+                  activeTextColor: Colors.white,
+                  value: AppCubit.get(context).isDark,
+                  onToggle: (value) {
+                    AppCubit.get(context).changeAppTheme();
+                  },
+                ),
+              ],
+            ),
+            body: ConditionalBuilder(
+              condition: state is! AppGetDoctorsLoadingState,
+              fallback: (context) =>
+                  const Center(child: CircularProgressIndicator()),
+              builder: (context) => ListView.separated(
+                itemBuilder: (context, index) {
+                  return buildDoctorItem(
+                    context,
+                    AppCubit.get(context).doctorsData[index],
+                    catdata,
+                  );
                 },
+                itemCount: AppCubit.get(context).doctorsData.length,
+                separatorBuilder: (context, index) => const SizedBox(),
               ),
-            ],
-          ),
-          body: ConditionalBuilder(
-            condition: state is! AppGetDoctorsLoadingState,
-            fallback: (context) =>
-                const Center(child: CircularProgressIndicator()),
-            builder: (context) => ListView.separated(
-              itemBuilder: (context, index) {
-                return buildDoctorItem(
-                  context,
-                  AppCubit.get(context).doctorsData[index],
-                  catdata,
-                );
-              },
-              itemCount: AppCubit.get(context).doctorsData.length,
-              separatorBuilder: (context, index) => const SizedBox(),
             ),
           ),
         );

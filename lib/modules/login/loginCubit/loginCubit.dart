@@ -29,7 +29,7 @@ class LoginCubit extends Cubit<LoginStates> {
   void userLogin(
       {required String phone, required String password, required var context}) {
     emit(LoginLoadingState());
-    DioHelper.postData(url: loginUrl, data: {
+    DioHelper.postDataWithoutToken(url: loginUrl, data: {
       'mobile': phone,
       'password': password,
       'onesignal_id': '1',

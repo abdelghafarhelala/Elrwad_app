@@ -2,7 +2,7 @@ import 'package:alrwad/appCubit/app_cubit.dart';
 import 'package:alrwad/appCubit/app_states.dart';
 import 'package:alrwad/components/components.dart';
 import 'package:alrwad/modules/aboutUsScreen/aboutUs.dart';
-import 'package:alrwad/modules/bookingScreen%20copy/bookingScreen.dart';
+import 'package:alrwad/modules/bookingScreenDrawer/bookingScreenDrawer.dart';
 import 'package:alrwad/modules/contactUsScreenInDrawer/contactUs.dart';
 import 'package:alrwad/modules/layoutScreen/layoutScreen.dart';
 import 'package:alrwad/modules/login/login.dart';

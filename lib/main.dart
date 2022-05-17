@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+// import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 SharedPreferences? mySharedPreferences;
 void main() async {
@@ -38,11 +39,12 @@ void main() async {
     if (token != null) {
       widget = LayoutScreen();
     } else {
-      widget = const LoginScreen();
+      widget = LayoutScreen();
     }
   } else {
     widget = OnBoardingScreen();
   }
+
   BlocOverrides.runZoned(
     () {
       // Use cubits...
@@ -89,7 +91,7 @@ class MyApp extends StatelessWidget {
             themeMode:
                 AppCubit.get(context).isDark ? ThemeMode.dark : ThemeMode.light,
             // home: startWidget,
-            home: OnBoardingScreen(),
+            home: startWidget,
           );
         },
       ),

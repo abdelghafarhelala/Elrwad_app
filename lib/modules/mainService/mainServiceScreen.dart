@@ -19,7 +19,8 @@ class MainServicesScreen extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         return ConditionalBuilder(
-          condition: state is! AppGetMainServicesLoadingState,
+          condition: state is! AppGetMainServicesLoadingState &&
+              AppCubit.get(context).serviceLength > 0,
           builder: (context) => SingleChildScrollView(
             child: Expanded(
               child: Column(
@@ -30,9 +31,9 @@ class MainServicesScreen extends StatelessWidget {
                     },
                     child: buildServiceItem2(
                         context,
-                        AppCubit.get(context).services!.data![
-                            (AppCubit.get(context).services!.data!.length) -
-                                1]),
+                        AppCubit.get(context)
+                            .services!
+                            .data![(AppCubit.get(context).serviceLength) - 1]),
                   ),
                   ListView.separated(
                     shrinkWrap: true,

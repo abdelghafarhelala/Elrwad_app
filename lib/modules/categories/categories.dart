@@ -58,7 +58,8 @@ class Categories extends StatelessWidget {
             ],
           ),
           body: ConditionalBuilder(
-            condition: state is! AppGetCategoriesLoadingState,
+            condition: state is! AppGetCategoriesLoadingState &&
+                AppCubit.get(context).categoryLength > 0,
             fallback: (context) =>
                 const Center(child: CircularProgressIndicator()),
             builder: (context) => SingleChildScrollView(
@@ -79,7 +80,7 @@ class Categories extends StatelessWidget {
                           data!.data?[index],
                           data.data?[index].img ??
                               '2022_03_23_01_53_38_amrad-alklb.jpg',
-                          AppCubit.get(context).category?.data?[index].name,
+                          AppCubit.get(context).categoryLength,
                           context))),
                 ),
               ),

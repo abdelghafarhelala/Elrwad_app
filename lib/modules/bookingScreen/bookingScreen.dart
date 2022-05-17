@@ -4,6 +4,7 @@ import 'package:alrwad/components/components.dart';
 import 'package:alrwad/models/categoryModel/categoryModel.dart';
 import 'package:alrwad/models/doctorsModel/doctorsModel.dart';
 import 'package:alrwad/modules/doctors/doctors.dart';
+import 'package:alrwad/modules/layoutScreen/layoutScreen.dart';
 import 'package:alrwad/modules/login/login.dart';
 import 'package:alrwad/modules/myDrawer/myDrawer.dart';
 import 'package:alrwad/shared/colors.dart';
@@ -36,7 +37,18 @@ class _BookingScreenState extends State<BookingScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit, AppStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is AppPostBookingSuccessState) {
+          if (state.model.success == true) {
+            showToast(text: 'تم الحجز بنجاح', state: ToastStates.success);
+            navigateTo(context, LayoutScreen());
+          } else {
+            showToast(
+                text: 'لم يتم الحجز الرجاء التأكد من البايانات المدخله',
+                state: ToastStates.error);
+          }
+        }
+      },
       builder: (context, state) {
         var formKey2 = GlobalKey<FormState>();
         var dateController = TextEditingController();
@@ -183,15 +195,15 @@ class _BookingScreenState extends State<BookingScreen> {
                         builder: (context) => defaultButton(
                             onPress: () {
                               if (formKey2.currentState!.validate()) {
-                                // AppCubit.get(context).makeBooking(
-                                //     categoryId: categoryData!.id!,
-                                //     doctorId: doctorData!.id!,
-                                //     date: dateController.text,
-                                //     workKind: company,
-                                //     companyName: companyController.text,
-                                //     cardNumber: idController.text);
+                                AppCubit.get(context).makeBooking(
+                                    categoryId: categoryData!.id!,
+                                    doctorId: doctorData!.id!,
+                                    date: dateController.text,
+                                    workKind: company,
+                                    companyName: companyController.text,
+                                    cardNumber: idController.text);
                                 print(categoryData?.id);
-                                print(doctorData?.id);
+                                // print(company);
                               } else {}
                             },
                             text: ' احجز الآن'),
