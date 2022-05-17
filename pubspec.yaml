@@ -40,6 +40,8 @@ dependencies:
   fluttertoast: ^8.0.9
   conditional_builder_null_safety: ^0.0.6
   smooth_page_indicator: ^1.0.0+2
+  flutter_lints: ^1.0.4
+  
   
 
 
@@ -51,6 +53,21 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  
+  flutter_launcher_icons: ^0.9.2
+  flutter_native_splash: ^2.2.0+1
+
+
+flutter_icons:
+  image_path: "assets/images/logo.jpeg"
+  android: "launcher_icon"
+  ios: true
+flutter_native_splash:
+  color: "#42a5f5"
+  image: assets/images/logo.jpeg
+  ios: true
+  android_gravity: fill
+  
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

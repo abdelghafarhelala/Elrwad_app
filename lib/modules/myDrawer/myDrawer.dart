@@ -5,6 +5,7 @@ import 'package:alrwad/modules/aboutUsScreen/aboutUs.dart';
 import 'package:alrwad/modules/bookingScreen%20copy/bookingScreen.dart';
 import 'package:alrwad/modules/contactUsScreenInDrawer/contactUs.dart';
 import 'package:alrwad/modules/layoutScreen/layoutScreen.dart';
+import 'package:alrwad/modules/login/login.dart';
 import 'package:alrwad/modules/serviceScreen/serviceScreen.dart';
 import 'package:alrwad/shared/colors.dart';
 import 'package:alrwad/shared/const.dart';
@@ -59,6 +60,9 @@ class MyDrawer extends StatelessWidget {
       padding: const EdgeInsets.only(top: 15),
       child: Column(
         children: [
+          if (token == null)
+            menuItem(
+                context, Icons.person, 'تسجيل الدخول', const LoginScreen()),
           menuItem(context, Icons.home, 'الرئيسيه', LayoutScreen()),
           menuItem(context, Icons.support_rounded, 'الخدمات',
               const ServicesScreen()),

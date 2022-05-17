@@ -3,6 +3,7 @@
 import 'dart:ui';
 
 import 'package:alrwad/components/components.dart';
+import 'package:alrwad/modules/layoutScreen/layoutScreen.dart';
 import 'package:alrwad/modules/login/login.dart';
 import 'package:alrwad/network/local/cache_Helper.dart';
 import 'package:alrwad/shared/colors.dart';
@@ -58,7 +59,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   void submit() {
     CacheHelper.saveData(key: 'onBoarding', value: true).then((value) {
       if (value) {
-        navigateAndFinish(context, LoginScreen());
+        navigateAndFinish(context, LayoutScreen());
       }
     });
   }
@@ -99,7 +100,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       setState(() {
                         isLast = true;
                       });
-                      print('last');
                     } else {
                       setState(() {
                         isLast = false;

@@ -3,6 +3,7 @@ import 'package:alrwad/appCubit/app_states.dart';
 import 'package:alrwad/components/components.dart';
 import 'package:alrwad/models/categoryModel/categoryModel.dart';
 import 'package:alrwad/models/doctorsModel/doctorsModel.dart';
+import 'package:alrwad/modules/bookingScreen%20copy/bookingScreen.dart';
 import 'package:alrwad/modules/bookingScreen/bookingScreen.dart';
 import 'package:alrwad/modules/myDrawer/myDrawer.dart';
 import 'package:alrwad/network/endpoints.dart';
@@ -101,7 +102,7 @@ Widget buildDoctorItem(context, Results data, Data? cDate) => InkWell(
       onTap: () {
         navigateTo(
             context,
-            BookingScreen(
+            BookingScreenDrawer(
               categoryData: cDate,
               doctorData: data,
             ));
