@@ -2,6 +2,7 @@ import 'package:alrwad/appCubit/app_cubit.dart';
 import 'package:alrwad/appCubit/app_states.dart';
 import 'package:alrwad/components/components.dart';
 import 'package:alrwad/modules/contactUsScreen/contactUs.dart';
+import 'package:alrwad/modules/layoutScreen/layoutScreen.dart';
 import 'package:alrwad/modules/myDrawer/myDrawer.dart';
 import 'package:alrwad/network/endpoints.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
@@ -57,7 +58,8 @@ class AboutUsScreen extends StatelessWidget {
                         ),
                         defaultButton(
                             onPress: () {
-                              navigateTo(context, ContactUsScreen());
+                              AppCubit.get(context).currentIndex = 2;
+                              navigateTo(context, LayoutScreen());
                             },
                             text: 'تواصل معنا')
                       ],

@@ -6,6 +6,7 @@ import 'package:alrwad/models/mainServicesModel/mainServicesModel.dart';
 import 'package:alrwad/modules/categories/categories.dart';
 import 'package:alrwad/modules/doctors/doctors.dart';
 import 'package:alrwad/modules/layoutScreen/layoutScreen.dart';
+import 'package:alrwad/modules/serviceDetailsScreen/serviceDetailsScreen.dart';
 import 'package:alrwad/network/endpoints.dart';
 import 'package:alrwad/shared/colors.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -189,6 +190,12 @@ Widget buildServiceItem(ServesData? data, context) => InkWell(
       onTap: () {
         if (data!.id == 6) {
           navigateTo(context, Categories());
+        } else {
+          navigateTo(
+              context,
+              ServiceDetailsScreen(
+                serviceData: data,
+              ));
         }
       },
       child: Card(
