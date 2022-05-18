@@ -74,6 +74,9 @@ class _BookingScreenState extends State<BookingScreen> {
                       controller: TextEditingController(
                           text: categoryData?.name ?? 'لم تختار التخصص'),
                       enabled: false,
+                      onTap: () {
+                        navigateTo(context, Categories());
+                      },
                     ),
                     const SizedBox(
                       height: 15,

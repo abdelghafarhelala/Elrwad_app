@@ -77,6 +77,9 @@ class _BookingScreenDrawerState extends State<BookingScreenDrawer> {
                         controller: TextEditingController(
                             text: categoryData?.name ?? 'لم تختار التخصص'),
                         enabled: false,
+                        onTap: () {
+                          navigateTo(context, Categories());
+                        },
                       ),
                       const SizedBox(
                         height: 15,
@@ -85,6 +88,9 @@ class _BookingScreenDrawerState extends State<BookingScreenDrawer> {
                         controller: TextEditingController(
                             text: doctorData?.name ?? 'لم تختار الطبيب'),
                         enabled: false,
+                        onTap: () {
+                          navigateTo(context, Categories());
+                        },
                       ),
                       const SizedBox(
                         height: 15,
@@ -148,28 +154,42 @@ class _BookingScreenDrawerState extends State<BookingScreenDrawer> {
                       ),
                       if (isCompany == true)
                         defaultTextField(
-                            lable: 'التاريخ',
-                            prefix: Icons.date_range,
-                            validate: (String s) {
-                              if (s.isEmpty) {
-                                return 'يجب ان تدخل التاريخ';
+                            controller: idController,
+                            lable: 'رقم البطاقه',
+                            prefix: Icons.account_box_rounded,
+                            validate: (String v) {
+                              if (v.isEmpty) {
+                                return 'يجب ان تدخل رقم البطاقه ';
                               }
                             },
                             context: context,
-                            type: TextInputType.datetime,
-                            controller: dateController,
-                            ontap: () {
-                              showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime.now(),
-                                      lastDate: DateTime(2030))
-                                  .then((value) {
-                                String onlyDate =
-                                    DateFormat("yyyy-MM-dd").format(value!);
-                                dateController.text = onlyDate;
-                              });
-                            }),
+                            type: TextInputType.number),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      defaultTextField(
+                          lable: 'التاريخ',
+                          prefix: Icons.date_range,
+                          validate: (String s) {
+                            if (s.isEmpty) {
+                              return 'يجب ان تدخل التاريخ';
+                            }
+                          },
+                          context: context,
+                          type: TextInputType.datetime,
+                          controller: dateController,
+                          ontap: () {
+                            showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime.now(),
+                                    lastDate: DateTime(2030))
+                                .then((value) {
+                              String onlyDate =
+                                  DateFormat("yyyy-MM-dd").format(value!);
+                              dateController.text = onlyDate;
+                            });
+                          }),
                       const SizedBox(
                         height: 15,
                       ),

@@ -1,10 +1,14 @@
+// ignore_for_file: avoid_print
+
 import 'package:alrwad/components/components.dart';
 import 'package:alrwad/models/ContactUsModel/contactUsModel.dart';
+import 'package:alrwad/models/aboutUsModel/aboutUsModel.dart';
 import 'package:alrwad/models/bookingModel/bookingModel.dart';
 import 'package:alrwad/models/categoryModel/categoryModel.dart';
 import 'package:alrwad/models/doctorsModel/doctorsModel.dart';
 import 'package:alrwad/models/mainServicesModel/mainServicesModel.dart';
 import 'package:alrwad/models/profileModel/profileModel.dart';
+import 'package:alrwad/models/sliderModel/sliderModel.dart';
 import 'package:alrwad/models/socialLinksModel/socialLinksModel.dart';
 import 'package:alrwad/models/userModel/userModel.dart';
 import 'package:alrwad/modules/bookingScreen/bookingScreen.dart';
@@ -229,6 +233,39 @@ class AppCubit extends Cubit<AppStates> {
         navigateAndFinish(context, const LoginScreen());
         emit(AppLogoutSuccessState());
       }
+    });
+  }
+
+//get slider data
+  SliderModel? slider;
+  int sliderLength = 0;
+  void getSliderData() {
+    emit(AppGetSliderDataLoadingState());
+    DioHelper.getDataWithoutToken(url: sliderUrl).then((value) {
+      print(value.data);
+      slider = SliderModel.fromJson(value.data);
+      // print(category?.data?[0].name);
+      sliderLength = slider!.data!.length;
+      emit(AppGetSliderDataSuccessState());
+    }).catchError((error) {
+      emit(AppGetSliderDataErrorState());
+      print(error.toString());
+    });
+  }
+
+  //get about us data
+  AboutUsModel? about;
+
+  void getAboutData() {
+    emit(AppGetAboutUsDataLoadingState());
+    DioHelper.getDataWithoutToken(url: aboutUsUrl).then((value) {
+      print(value.data);
+      about = AboutUsModel.fromJson(value.data);
+      // print(category?.data?[0].name);
+      emit(AppGetAboutUsDataSuccessState());
+    }).catchError((error) {
+      emit(AppGetAboutUsDataErrorState());
+      print(error.toString());
     });
   }
 }

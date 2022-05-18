@@ -13,12 +13,7 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-final List<String> imgList = [
-  'assets/images/safe1.jpg',
-  'assets/images/safe2.jpg',
-  'assets/images/safe3.jpg',
-  'assets/images/safe4.jpg',
-];
+final List<String> imgList = [];
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -28,12 +23,16 @@ class HomeScreen extends StatelessWidget {
     return BlocConsumer<AppCubit, AppStates>(
       listener: (context, state) {},
       builder: (context, state) {
+        AppCubit.get(context).slider?.data?.forEach((element) {
+          imgList.add(imagesLink + element.img!);
+        });
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: ConditionalBuilder(
               condition: state is! AppGetMainServicesLoadingState &&
                   state is! AppGetMainServicesLoadingState &&
                   AppCubit.get(context).categoryLength > 0 &&
+                  AppCubit.get(context).sliderLength > 0 &&
                   AppCubit.get(context).serviceLength > 0,
               fallback: (context) =>
                   const Center(child: CircularProgressIndicator()),
@@ -86,9 +85,17 @@ class HomeScreen extends StatelessWidget {
                                 const SizedBox(
                               width: 5,
                             ),
-                            itemBuilder: (context, index) => buildServiceItem(
-                                AppCubit.get(context).services?.data?[index],
-                                context),
+                            itemBuilder: (context, index) {
+                              int reverseIndex =
+                                  AppCubit.get(context).serviceLength -
+                                      1 -
+                                      index;
+                              return buildServiceItem(
+                                  AppCubit.get(context)
+                                      .services
+                                      ?.data?[reverseIndex],
+                                  context);
+                            },
                             itemCount: AppCubit.get(context).serviceLength,
                           ),
                         ),
@@ -136,7 +143,7 @@ Widget buildSliderItem() => Card(
         items: imgList
             .map(
               (e) => Image(
-                image: AssetImage(e),
+                image: NetworkImage(e),
                 fit: BoxFit.cover,
                 width: double.infinity,
               ),

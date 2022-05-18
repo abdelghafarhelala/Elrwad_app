@@ -6,6 +6,7 @@ import 'package:alrwad/models/doctorsModel/doctorsModel.dart';
 import 'package:alrwad/modules/bookingScreenDrawer/bookingScreenDrawer.dart';
 import 'package:alrwad/modules/myDrawer/myDrawer.dart';
 import 'package:alrwad/network/endpoints.dart';
+import 'package:alrwad/network/local/cache_Helper.dart';
 import 'package:alrwad/shared/colors.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
@@ -61,6 +62,7 @@ class DoctorsScreen extends StatelessWidget {
 
 Widget buildDoctorItem(context, Results data, Data? cDate) => InkWell(
       onTap: () {
+        CacheHelper.sharedPreferences.setInt('doctorId', data.id!);
         navigateTo(
             context,
             BookingScreenDrawer(

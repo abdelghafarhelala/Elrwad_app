@@ -69,3 +69,17 @@ class AppGetSocialDataErrorState extends AppStates {}
 class AppGetSocialDataLoadingState extends AppStates {}
 
 class AppLogoutSuccessState extends AppStates {}
+
+//get slider data
+class AppGetSliderDataSuccessState extends AppStates {}
+
+class AppGetSliderDataErrorState extends AppStates {}
+
+class AppGetSliderDataLoadingState extends AppStates {}
+
+//get about us data
+class AppGetAboutUsDataSuccessState extends AppStates {}
+
+class AppGetAboutUsDataErrorState extends AppStates {}
+
+class AppGetAboutUsDataLoadingState extends AppStates {}

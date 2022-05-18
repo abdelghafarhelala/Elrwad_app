@@ -5,6 +5,7 @@ import 'package:alrwad/models/categoryModel/categoryModel.dart';
 import 'package:alrwad/modules/doctors/doctors.dart';
 import 'package:alrwad/modules/myDrawer/myDrawer.dart';
 import 'package:alrwad/network/endpoints.dart';
+import 'package:alrwad/network/local/cache_Helper.dart';
 import 'package:alrwad/shared/colors.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
@@ -61,6 +62,7 @@ Widget buildCategoryItem(Data? data, image, name, context) =>
     Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       InkWell(
         onTap: () {
+          // CacheHelper.sharedPreferences.setString('categoryId', data!.name!);
           AppCubit.get(context).getDoctorsData(
             data?.id,
           );

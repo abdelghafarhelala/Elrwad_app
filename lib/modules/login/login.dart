@@ -159,6 +159,7 @@ class LoginScreen extends StatelessWidget {
                               ),
                               TextButton(
                                   onPressed: () {
+                                    AppCubit.get(context).currentIndex = 0;
                                     navigateTo(context, LayoutScreen());
                                   },
                                   child: const Text(
