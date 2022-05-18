@@ -35,7 +35,7 @@ class LoginCubit extends Cubit<LoginStates> {
       'onesignal_id': '1',
     }).then((value) {
       loginModel = UserModel.fromJson(value.data);
-      CacheHelper.saveData(key: 'token', value: loginModel!.success!.token);
+      CacheHelper.saveData(key: 'token', value: loginModel?.success?.token);
       emit(LoginSuccessState(loginModel));
     }).catchError((error) {
       print(error.toString());

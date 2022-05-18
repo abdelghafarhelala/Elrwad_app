@@ -32,10 +32,10 @@ class MyDrawer extends StatelessWidget {
               Container(
                 margin: const EdgeInsets.only(bottom: 10),
                 height: 70,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
-                      image: NetworkImage(userData?.data?.profilePhotoUrl ??
+                      image: NetworkImage(
                           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwnYnwftDUSjsQmLQvMBZ2pwDXhAJiIdfKvg&usqp=CAU'),
                     )),
               ),
@@ -60,9 +60,6 @@ class MyDrawer extends StatelessWidget {
       padding: const EdgeInsets.only(top: 15),
       child: Column(
         children: [
-          if (token == null)
-            menuItem(
-                context, Icons.person, 'تسجيل الدخول', const LoginScreen()),
           menuItem(context, Icons.home, 'الرئيسيه', LayoutScreen()),
           menuItem(context, Icons.support_rounded, 'الخدمات', LayoutScreen(),
               index: 1),
@@ -77,11 +74,15 @@ class MyDrawer extends StatelessWidget {
             Icons.brightness_medium,
             ' الوضع الليلي',
           ),
-          menuItem2(
-            context,
-            Icons.logout,
-            'تسجيل الخروج',
-          ),
+          if (token == null)
+            menuItem(
+                context, Icons.person, 'تسجيل الدخول', const LoginScreen()),
+          if (token != null)
+            menuItem2(
+              context,
+              Icons.logout,
+              'تسجيل الخروج',
+            ),
         ],
       ),
     );
@@ -126,7 +127,7 @@ class MyDrawer extends StatelessWidget {
     return Material(
       child: InkWell(
         onTap: () {
-          logOut(context);
+          AppCubit.get(context).logOut(context);
         },
         child: Padding(
           padding: const EdgeInsets.all(15),

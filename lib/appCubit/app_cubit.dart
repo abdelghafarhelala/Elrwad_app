@@ -1,12 +1,16 @@
+import 'package:alrwad/components/components.dart';
 import 'package:alrwad/models/ContactUsModel/contactUsModel.dart';
 import 'package:alrwad/models/bookingModel/bookingModel.dart';
 import 'package:alrwad/models/categoryModel/categoryModel.dart';
 import 'package:alrwad/models/doctorsModel/doctorsModel.dart';
 import 'package:alrwad/models/mainServicesModel/mainServicesModel.dart';
 import 'package:alrwad/models/profileModel/profileModel.dart';
+import 'package:alrwad/models/socialLinksModel/socialLinksModel.dart';
+import 'package:alrwad/models/userModel/userModel.dart';
 import 'package:alrwad/modules/bookingScreen/bookingScreen.dart';
 import 'package:alrwad/modules/contactUsScreen/contactUs.dart';
 import 'package:alrwad/modules/homePage/home.dart';
+import 'package:alrwad/modules/login/login.dart';
 import 'package:alrwad/modules/mainService/mainServiceScreen.dart';
 import 'package:alrwad/network/endpoints.dart';
 import 'package:alrwad/network/local/cache_Helper.dart';
@@ -199,6 +203,32 @@ class AppCubit extends Cubit<AppStates> {
     }).catchError((error) {
       emit(AppPostBookingErrorState());
       print(error.toString());
+    });
+  }
+
+  SocialLinksModel? social;
+  int socialLength = 0;
+  void getSocialData() {
+    emit(AppGetSocialDataLoadingState());
+    DioHelper.getDataWithoutToken(url: socialUrl).then((value) {
+      print(value.data);
+      social = SocialLinksModel.fromJson(value.data);
+      // print(category?.data?[0].name);
+      socialLength = social!.socialMedia!.length;
+      emit(AppGetSocialDataSuccessState());
+    }).catchError((error) {
+      emit(AppGetSocialDataErrorState());
+      print(error.toString());
+    });
+  }
+
+  void logOut(context) {
+    CacheHelper.removeData(key: 'token').then((value) {
+      if (value) {
+        profile = null;
+        navigateAndFinish(context, const LoginScreen());
+        emit(AppLogoutSuccessState());
+      }
     });
   }
 }

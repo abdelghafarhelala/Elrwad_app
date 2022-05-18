@@ -60,3 +60,12 @@ class AppPostBookingSuccessState extends AppStates {
 class AppPostBookingErrorState extends AppStates {}
 
 class AppPostBookingLoadingState extends AppStates {}
+
+//get social data
+class AppGetSocialDataSuccessState extends AppStates {}
+
+class AppGetSocialDataErrorState extends AppStates {}
+
+class AppGetSocialDataLoadingState extends AppStates {}
+
+class AppLogoutSuccessState extends AppStates {}

@@ -70,7 +70,8 @@ class MyApp extends StatelessWidget {
         ..changeAppTheme(fromCache: isDark)
         ..getUserData()
         ..getCategoryData()
-        ..getMainServicesData(),
+        ..getMainServicesData()
+        ..getSocialData(),
       child: BlocConsumer<AppCubit, AppStates>(
         listener: (context, state) {},
         builder: (context, state) {

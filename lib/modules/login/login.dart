@@ -8,6 +8,7 @@ import 'package:alrwad/modules/login/loginCubit/loginStates.dart';
 import 'package:alrwad/modules/mainService/mainServiceScreen.dart';
 import 'package:alrwad/modules/register/register.dart';
 import 'package:alrwad/network/local/cache_Helper.dart';
+import 'package:alrwad/shared/colors.dart';
 import 'package:alrwad/shared/const.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,7 @@ class LoginScreen extends StatelessWidget {
           if (state is LoginSuccessState) {
             if (state.model?.result == true) {
               CacheHelper.saveData(
-                      key: "token", value: state.model?.success!.token)
+                      key: "token", value: state.model?.success?.token)
                   .then((value) {
                 token = state.model?.success?.token;
                 navigateAndFinish(context, LayoutScreen());
@@ -47,7 +48,6 @@ class LoginScreen extends StatelessWidget {
           return Scaffold(
             appBar: AppBar(
               title: Text('تسجيل الدخول'),
-              centerTitle: true,
             ),
             body: Center(
               child: SingleChildScrollView(
@@ -127,11 +127,14 @@ class LoginScreen extends StatelessWidget {
                           //   child: OutlinedButton(
                           //       onPressed: () {}, child: const Text('data')),
                           // ),
+                          const SizedBox(
+                            height: 10,
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                'ليس لديك حساب',
+                                'ليس لديك حساب ؟',
                                 style: Theme.of(context).textTheme.bodyText2,
                               ),
                               TextButton(
@@ -140,6 +143,26 @@ class LoginScreen extends StatelessWidget {
                                   },
                                   child: const Text(
                                     'حساب جديد',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      // color: Colors.blue,
+                                    ),
+                                  )),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                ' انتقل الي الصفحه الرئيسية مباشرة',
+                                style: Theme.of(context).textTheme.bodyText2,
+                              ),
+                              TextButton(
+                                  onPressed: () {
+                                    navigateTo(context, LayoutScreen());
+                                  },
+                                  child: const Text(
+                                    'الصفحه الرئيسية ',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       // color: Colors.blue,

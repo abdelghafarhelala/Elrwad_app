@@ -3,18 +3,16 @@ import 'package:alrwad/appCubit/app_states.dart';
 import 'package:alrwad/components/components.dart';
 import 'package:alrwad/models/categoryModel/categoryModel.dart';
 import 'package:alrwad/models/doctorsModel/doctorsModel.dart';
+import 'package:alrwad/modules/categories/categories.dart';
 import 'package:alrwad/modules/layoutScreen/layoutScreen.dart';
 import 'package:alrwad/modules/login/login.dart';
-import 'package:alrwad/modules/myDrawer/myDrawer.dart';
-import 'package:alrwad/shared/colors.dart';
 import 'package:alrwad/shared/const.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_switch/flutter_switch.dart';
 import 'package:intl/intl.dart';
 
-String company = '';
+String company = '2';
 bool isCompany = false;
 
 class BookingScreenDrawer extends StatefulWidget {
@@ -97,6 +95,7 @@ class _BookingScreenDrawerState extends State<BookingScreenDrawer> {
                             child: Row(
                               children: [
                                 Radio(
+                                    autofocus: true,
                                     value: '2',
                                     groupValue: company,
                                     onChanged: (val) {
@@ -147,45 +146,32 @@ class _BookingScreenDrawerState extends State<BookingScreenDrawer> {
                       const SizedBox(
                         height: 15,
                       ),
-                      defaultTextField(
-                          lable: 'التاريخ',
-                          prefix: Icons.date_range,
-                          validate: (String s) {
-                            if (s.isEmpty) {
-                              return 'يجب ان تدخل التاريخ';
-                            }
-                          },
-                          context: context,
-                          type: TextInputType.datetime,
-                          controller: dateController,
-                          ontap: () {
-                            showDatePicker(
-                                    context: context,
-                                    initialDate: DateTime.now(),
-                                    firstDate: DateTime.now(),
-                                    lastDate: DateTime(2030))
-                                .then((value) {
-                              String onlyDate =
-                                  DateFormat("yyyy-MM-dd").format(value!);
-                              dateController.text = onlyDate;
-                            });
-                          }),
+                      if (isCompany == true)
+                        defaultTextField(
+                            lable: 'التاريخ',
+                            prefix: Icons.date_range,
+                            validate: (String s) {
+                              if (s.isEmpty) {
+                                return 'يجب ان تدخل التاريخ';
+                              }
+                            },
+                            context: context,
+                            type: TextInputType.datetime,
+                            controller: dateController,
+                            ontap: () {
+                              showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime.now(),
+                                      lastDate: DateTime(2030))
+                                  .then((value) {
+                                String onlyDate =
+                                    DateFormat("yyyy-MM-dd").format(value!);
+                                dateController.text = onlyDate;
+                              });
+                            }),
                       const SizedBox(
                         height: 15,
-                      ),
-                      defaultTextField(
-                          controller: idController,
-                          lable: 'رقم البطاقه',
-                          prefix: Icons.account_box_rounded,
-                          validate: (String v) {
-                            if (v.isEmpty) {
-                              return 'يجب ان تدخل رقم البطاقه ';
-                            }
-                          },
-                          context: context,
-                          type: TextInputType.number),
-                      const SizedBox(
-                        height: 20,
                       ),
                       if (token != null &&
                           categoryData?.id != null &&
@@ -243,7 +229,7 @@ class _BookingScreenDrawerState extends State<BookingScreenDrawer> {
                             ),
                             TextButton(
                                 onPressed: () {
-                                  navigateAndFinish(context, LoginScreen());
+                                  navigateAndFinish(context, Categories());
                                 },
                                 child: const Text(
                                   'اختر الآن',

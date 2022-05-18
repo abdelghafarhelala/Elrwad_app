@@ -3,9 +3,11 @@ import 'package:alrwad/appCubit/app_states.dart';
 import 'package:alrwad/components/components.dart';
 
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_social_button/flutter_social_button.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ContactUsScreen extends StatelessWidget {
   const ContactUsScreen({Key? key}) : super(key: key);
@@ -108,12 +110,19 @@ class ContactUsScreen extends StatelessWidget {
                         builder: (context) => defaultButton(
                             onPress: () {
                               if (formKey.currentState!.validate()) {
-                                AppCubit.get(context).contactUsData(
-                                  message: detailsController.text,
-                                  email: emailController.text,
-                                  name: nameController.text,
-                                  phone: phoneController.text,
-                                );
+                                if (EmailValidator.validate(
+                                    emailController.text)) {
+                                  AppCubit.get(context).contactUsData(
+                                    message: detailsController.text,
+                                    email: emailController.text,
+                                    name: nameController.text,
+                                    phone: phoneController.text,
+                                  );
+                                } else {
+                                  showToast(
+                                      text: 'البريد الالكتروني غير صحيح',
+                                      state: ToastStates.error);
+                                }
                               } else {}
                             },
                             text: 'ارسال'),
@@ -149,19 +158,38 @@ class ContactUsScreen extends StatelessWidget {
                         children: [
                           FlutterSocialButton(
                               mini: true,
-                              onTap: () {},
+                              onTap: () {
+                                _launchUrl(
+                                    context,
+                                    AppCubit.get(context)
+                                        .social
+                                        ?.socialMedia?[0]
+                                        .urlLink);
+                              },
                               buttonType: ButtonType.facebook),
                           FlutterSocialButton(
                               mini: true,
-                              onTap: () {},
+                              onTap: () {
+                                _launchUrl(
+                                    context,
+                                    AppCubit.get(context)
+                                        .social
+                                        ?.socialMedia?[1]
+                                        .urlLink);
+                              },
                               buttonType: ButtonType.twitter),
                           FlutterSocialButton(
                               mini: true,
-                              onTap: () {},
+                              onTap: () {
+                                _launchUrl(context, 'https://mail.google.com/');
+                              },
                               buttonType: ButtonType.google),
                           FlutterSocialButton(
                               mini: true,
-                              onTap: () {},
+                              onTap: () {
+                                _launchUrl(
+                                    context, 'https://www.linkedin.com/');
+                              },
                               buttonType: ButtonType.linkedin),
                         ],
                       ),
@@ -175,4 +203,8 @@ class ContactUsScreen extends StatelessWidget {
       },
     );
   }
+}
+
+void _launchUrl(context, url) async {
+  if (!await launchUrl(Uri.parse(url))) throw 'Could not launch $url';
 }
