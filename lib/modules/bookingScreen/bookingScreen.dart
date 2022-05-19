@@ -82,8 +82,14 @@ class _BookingScreenState extends State<BookingScreen> {
                       height: 20,
                     ),
                     DropdownButton(
+                      // dropdownColor: Colors.red,
+                      onTap: () {
+                        // doctorName2 = '';
+                      },
+
+                      style: Theme.of(context).textTheme.bodyText2,
                       isExpanded: true,
-                      hint: Text('اختر التخصص'),
+                      hint: const Text('اختر التخصص'),
                       items: AppCubit.get(context)
                           .categoriesNames2
                           .map((e) => DropdownMenuItem(
@@ -111,6 +117,8 @@ class _BookingScreenState extends State<BookingScreen> {
                       height: 20,
                     ),
                     DropdownButton(
+                      onTap: () {},
+                      style: Theme.of(context).textTheme.bodyText2,
                       isExpanded: true,
                       hint: const Text('اختر الطبيب'),
                       items: Doctors2.map((e) => DropdownMenuItem(

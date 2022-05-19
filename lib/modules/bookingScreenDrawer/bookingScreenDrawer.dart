@@ -92,6 +92,7 @@ class _BookingScreenDrawerState extends State<BookingScreenDrawer> {
                         height: 20,
                       ),
                       DropdownButton(
+                        style: Theme.of(context).textTheme.bodyText2,
                         isExpanded: true,
                         hint: Text('اختر التخصص'),
                         items: categories
@@ -123,6 +124,7 @@ class _BookingScreenDrawerState extends State<BookingScreenDrawer> {
                         height: 20,
                       ),
                       DropdownButton(
+                        style: Theme.of(context).textTheme.bodyText2,
                         isExpanded: true,
                         hint: const Text('اختر الطبيب'),
                         items: Doctors.map((e) => DropdownMenuItem(
