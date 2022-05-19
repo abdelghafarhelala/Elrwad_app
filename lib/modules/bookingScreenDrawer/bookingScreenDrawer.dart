@@ -14,10 +14,16 @@ import 'package:intl/intl.dart';
 
 String company = '2';
 bool isCompany = false;
+var categoryName;
+var doctorName;
+List<String> Doctors = [];
+List<String> categories = [];
+int? categoryId;
+int? doctorId;
 
 class BookingScreenDrawer extends StatefulWidget {
   // const BookingScreenDrawer({Key? key}) : super(key: key);
-  final Data? categoryData;
+  final CategoryData? categoryData;
   final Results? doctorData;
   BookingScreenDrawer({Key? key, this.categoryData, this.doctorData})
       : super(key: key);
@@ -27,7 +33,7 @@ class BookingScreenDrawer extends StatefulWidget {
 }
 
 class _BookingScreenDrawerState extends State<BookingScreenDrawer> {
-  final Data? categoryData;
+  final CategoryData? categoryData;
   final Results? doctorData;
 
   _BookingScreenDrawerState(this.categoryData, this.doctorData);
@@ -51,7 +57,19 @@ class _BookingScreenDrawerState extends State<BookingScreenDrawer> {
         var dateController = TextEditingController();
         var companyController = TextEditingController();
         var idController = TextEditingController();
-
+        AppCubit.get(context).categoriesNames.forEach((element) {
+          categories.add(element);
+        });
+        if (categoryData?.name! != null) {
+          categoryName = categoryData?.name!;
+          categories.clear();
+          categories.add(categoryData!.name!);
+          if (doctorData?.name! != null) {
+            doctorName = doctorData?.name!;
+            Doctors.clear();
+            Doctors.add(doctorData!.name!);
+          }
+        }
         print(AppCubit.get(context).doctorsData.length);
 
         return Scaffold(
@@ -73,24 +91,49 @@ class _BookingScreenDrawerState extends State<BookingScreenDrawer> {
                       const SizedBox(
                         height: 20,
                       ),
-                      TextFormField(
-                        controller: TextEditingController(
-                            text: categoryData?.name ?? 'لم تختار التخصص'),
-                        enabled: false,
-                        onTap: () {
-                          navigateTo(context, Categories());
+                      DropdownButton(
+                        isExpanded: true,
+                        hint: Text('اختر التخصص'),
+                        items: categories
+                            .map((e) => DropdownMenuItem(
+                                  child: Text(e),
+                                  value: e,
+                                ))
+                            .toList(),
+                        onChanged: (val) {
+                          if (categoryName == null) {
+                            AppCubit.get(context)
+                                .categoryDropDownList(categoryName, val);
+                            AppCubit.get(context)
+                                .categoriesData
+                                .forEach((element) {
+                              if (element.name == val) {
+                                Doctors.clear();
+                                // Doctors.addAll(element.doctors!.cast());
+                                element.doctors!.forEach((element) {
+                                  Doctors.add(element.name!);
+                                });
+                              }
+                            });
+                          }
                         },
+                        value: categoryName,
                       ),
                       const SizedBox(
-                        height: 15,
+                        height: 20,
                       ),
-                      TextFormField(
-                        controller: TextEditingController(
-                            text: doctorData?.name ?? 'لم تختار الطبيب'),
-                        enabled: false,
-                        onTap: () {
-                          navigateTo(context, Categories());
+                      DropdownButton(
+                        isExpanded: true,
+                        hint: const Text('اختر الطبيب'),
+                        items: Doctors.map((e) => DropdownMenuItem(
+                              child: Text(e),
+                              value: e,
+                            )).toList(),
+                        onChanged: (val) {
+                          AppCubit.get(context)
+                              .doctorDropDownList(doctorName, val);
                         },
+                        value: doctorName,
                       ),
                       const SizedBox(
                         height: 15,
@@ -194,18 +237,30 @@ class _BookingScreenDrawerState extends State<BookingScreenDrawer> {
                         height: 15,
                       ),
                       if (token != null &&
-                          categoryData?.id != null &&
-                          doctorData?.id != null)
+                          categoryName != null &&
+                          doctorName != null)
                         ConditionalBuilder(
                           condition: state is! AppPostBookingLoadingState,
                           fallback: (context) =>
                               const Center(child: LinearProgressIndicator()),
                           builder: (context) => defaultButton(
                               onPress: () {
+                                AppCubit.get(context)
+                                    .categoriesData
+                                    .forEach((element) {
+                                  if (element.name == categoryName) {
+                                    categoryId = element.id;
+                                    element.doctors!.forEach((e) {
+                                      if (e.name == doctorName) {
+                                        doctorId = e.id;
+                                      }
+                                    });
+                                  }
+                                });
                                 if (formKey2.currentState!.validate()) {
                                   AppCubit.get(context).makeBooking(
-                                      categoryId: categoryData!.id!,
-                                      doctorId: doctorData!.id!,
+                                      categoryId: categoryId!,
+                                      doctorId: doctorId!,
                                       date: dateController.text,
                                       workKind: company,
                                       companyName: companyController.text,
@@ -239,7 +294,7 @@ class _BookingScreenDrawerState extends State<BookingScreenDrawer> {
                           ],
                         ),
                       if (token != null &&
-                          (categoryData?.id == null || doctorData?.id == null))
+                          (categoryName == null || doctorName == null))
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [

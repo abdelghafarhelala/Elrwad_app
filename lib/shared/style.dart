@@ -47,10 +47,10 @@ ThemeData lightTheme = ThemeData(
         fontWeight: FontWeight.w400,
         color: Colors.black,
       ),
-      subtitle1: TextStyle(
-        fontSize: 17,
-        color: Colors.red,
-      ),
+      // subtitle1: TextStyle(
+      //   fontSize: 17,
+      //   color: Colors.red,
+      // ),
       subtitle2: TextStyle(
         fontSize: 17,
         color: Colors.white,
@@ -148,10 +148,10 @@ ThemeData darkTheme = ThemeData(
       fontWeight: FontWeight.w400,
       color: Colors.white,
     ),
-    subtitle1: TextStyle(
-      fontSize: 17,
-      color: Colors.red,
-    ),
+    // subtitle1: TextStyle(
+    //   fontSize: 17,
+    //   color: Colors.red,
+    // ),
     subtitle2: TextStyle(
       fontSize: 17,
       color: primaryColor,

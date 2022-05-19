@@ -16,7 +16,7 @@ import 'package:flutter_switch/flutter_switch.dart';
 class DoctorsScreen extends StatelessWidget {
   // const DoctorsScreen({Key? key, this.catId}) : super(key: key);
   final int? catId;
-  final Data? catdata;
+  final CategoryData? catdata;
   // String userName;
   DoctorsScreen({
     Key? key,
@@ -60,7 +60,7 @@ class DoctorsScreen extends StatelessWidget {
   }
 }
 
-Widget buildDoctorItem(context, Results data, Data? cDate) => InkWell(
+Widget buildDoctorItem(context, Results data, CategoryData? cDate) => InkWell(
       onTap: () {
         CacheHelper.sharedPreferences.setInt('doctorId', data.id!);
         navigateTo(

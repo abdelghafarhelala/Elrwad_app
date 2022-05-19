@@ -70,13 +70,22 @@ class AppCubit extends Cubit<AppStates> {
 
 //get all categories
   int categoryLength = 0;
+  List<String> categoriesNames = [];
+  List<String> categoriesNames2 = [];
+  List<CategoryData> categoriesData = [];
   CategoryModel? category;
   void getCategoryData() {
     emit(AppGetCategoriesLoadingState());
     DioHelper.getDataWithoutToken(url: categoriesUrl).then((value) {
       category = CategoryModel.fromJson(value.data);
       categoryLength = category!.data!.length;
-      print(category?.data?[0].name);
+      category?.data?.forEach((element) {
+        categoriesNames.add(element.name!);
+        categoriesNames2.add(element.name!);
+      });
+      category?.data?.forEach((element) {
+        categoriesData.add(element);
+      });
       emit(AppGetCategoriesSuccessState());
     }).catchError((error) {
       emit(AppGetCategoriesErrorState());
@@ -109,22 +118,6 @@ class AppCubit extends Cubit<AppStates> {
       print(error.toString());
     });
   }
-  // void userLogin(
-  //     {required String phone, required String password, required var context}) {
-  //   emit(LoginLoadingState());
-  //   DioHelper.postDataWithoutToken(url: loginUrl, data: {
-  //     'mobile': phone,
-  //     'password': password,
-  //     'onesignal_id': '1',
-  //   }).then((value) {
-  //     loginModel = UserModel.fromJson(value.data);
-  //     CacheHelper.saveData(key: 'token', value: loginModel!.success!.token);
-  //     emit(LoginSuccessState(loginModel));
-  //   }).catchError((error) {
-  //     print(error.toString());
-  //     emit(LoginErrorState());
-  //   });
-  // }
 
 //get user
 
@@ -267,5 +260,22 @@ class AppCubit extends Cubit<AppStates> {
       emit(AppGetAboutUsDataErrorState());
       print(error.toString());
     });
+  }
+
+  void doctorDropDownList(doctor, val) {
+    // ignore: prefer_conditional_assignment
+    if (doctor == null) {
+      doctor = val;
+      emit(AppDoctorDropListSuccessState());
+    }
+  }
+
+  String categoryDropDownList(categoryName, val) {
+    // ignore: prefer_conditional_assignment
+    if (categoryName == null) {
+      categoryName = val;
+      emit(AppCategoryDropListSuccessState());
+    }
+    return categoryName;
   }
 }

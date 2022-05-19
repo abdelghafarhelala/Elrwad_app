@@ -58,7 +58,7 @@ class Categories extends StatelessWidget {
   }
 }
 
-Widget buildCategoryItem(Data? data, image, name, context) =>
+Widget buildCategoryItem(CategoryData? data, image, name, context) =>
     Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       InkWell(
         onTap: () {

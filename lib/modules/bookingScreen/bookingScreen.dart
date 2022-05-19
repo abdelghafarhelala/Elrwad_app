@@ -3,6 +3,7 @@ import 'package:alrwad/appCubit/app_states.dart';
 import 'package:alrwad/components/components.dart';
 import 'package:alrwad/models/categoryModel/categoryModel.dart';
 import 'package:alrwad/models/doctorsModel/doctorsModel.dart';
+import 'package:alrwad/modules/bookingScreenDrawer/bookingScreenDrawer.dart';
 import 'package:alrwad/modules/categories/categories.dart';
 import 'package:alrwad/modules/layoutScreen/layoutScreen.dart';
 import 'package:alrwad/modules/login/login.dart';
@@ -14,10 +15,16 @@ import 'package:intl/intl.dart';
 
 String company = '2';
 bool isCompany = false;
+var categoryName2;
+var doctorName2;
+List<String> Doctors2 = [];
+List<String> categories2 = [];
+int? categoryId2;
+int? doctorId2;
 
 class BookingScreen extends StatefulWidget {
   // const BookingScreen({Key? key}) : super(key: key);
-  final Data? categoryData;
+  final CategoryData? categoryData;
   final Results? doctorData;
   BookingScreen({Key? key, this.categoryData, this.doctorData})
       : super(key: key);
@@ -27,7 +34,7 @@ class BookingScreen extends StatefulWidget {
 }
 
 class _BookingScreenState extends State<BookingScreen> {
-  final Data? categoryData;
+  final CategoryData? categoryData;
   final Results? doctorData;
 
   _BookingScreenState(this.categoryData, this.doctorData);
@@ -38,6 +45,10 @@ class _BookingScreenState extends State<BookingScreen> {
         if (state is AppPostBookingSuccessState) {
           if (state.model.success == true) {
             showToast(text: 'تم الحجز بنجاح', state: ToastStates.success);
+            categoryName2 = null;
+            doctorName2 = null;
+            AppCubit.get(context).categoriesNames2 = [];
+            AppCubit.get(context).getCategoryData();
             navigateTo(context, LayoutScreen());
           } else {
             showToast(
@@ -70,24 +81,52 @@ class _BookingScreenState extends State<BookingScreen> {
                     const SizedBox(
                       height: 20,
                     ),
-                    TextFormField(
-                      controller: TextEditingController(
-                          text: categoryData?.name ?? 'لم تختار التخصص'),
-                      enabled: false,
-                      onTap: () {
-                        navigateTo(context, Categories());
+                    DropdownButton(
+                      isExpanded: true,
+                      hint: Text('اختر التخصص'),
+                      items: AppCubit.get(context)
+                          .categoriesNames2
+                          .map((e) => DropdownMenuItem(
+                                child: Text(e),
+                                value: e,
+                              ))
+                          .toList(),
+                      onChanged: (val) {
+                        setState(() {
+                          categoryName2 = val;
+                        });
+                        AppCubit.get(context).categoriesData.forEach((element) {
+                          if (element.name == val) {
+                            Doctors2.clear();
+                            // Doctors.addAll(element.doctors!.cast());
+                            element.doctors!.forEach((element) {
+                              Doctors2.add(element.name!);
+                            });
+                          }
+                        });
                       },
+                      value: categoryName2,
                     ),
                     const SizedBox(
-                      height: 15,
+                      height: 20,
                     ),
-                    TextFormField(
-                      controller: TextEditingController(
-                          text: doctorData?.name ?? 'لم تختار الطبيب'),
-                      enabled: false,
+                    DropdownButton(
+                      isExpanded: true,
+                      hint: const Text('اختر الطبيب'),
+                      items: Doctors2.map((e) => DropdownMenuItem(
+                            child: Text(e),
+                            value: e,
+                          )).toList(),
+                      onChanged: (val) {
+                        setState(() {
+                          print(val);
+                          doctorName2 = val.toString();
+                        });
+                      },
+                      value: doctorName2,
                     ),
                     const SizedBox(
-                      height: 15,
+                      height: 20,
                     ),
                     Row(
                       children: [
@@ -188,8 +227,8 @@ class _BookingScreenState extends State<BookingScreen> {
                       height: 15,
                     ),
                     if (token != null &&
-                        categoryData?.id != null &&
-                        doctorData?.id != null)
+                        categoryName2 != null &&
+                        doctorName2 != null)
                       ConditionalBuilder(
                         condition: state is! AppPostBookingLoadingState,
                         fallback: (context) =>
@@ -197,9 +236,21 @@ class _BookingScreenState extends State<BookingScreen> {
                         builder: (context) => defaultButton(
                             onPress: () {
                               if (formKey2.currentState!.validate()) {
+                                AppCubit.get(context)
+                                    .categoriesData
+                                    .forEach((element) {
+                                  if (element.name == categoryName2) {
+                                    categoryId = element.id;
+                                    element.doctors!.forEach((e) {
+                                      if (e.name == doctorName2) {
+                                        doctorId = e.id;
+                                      }
+                                    });
+                                  }
+                                });
                                 AppCubit.get(context).makeBooking(
-                                    categoryId: categoryData!.id!,
-                                    doctorId: doctorData!.id!,
+                                    categoryId: categoryId!,
+                                    doctorId: doctorId!,
                                     date: dateController.text,
                                     workKind: company,
                                     companyName: companyController.text,
@@ -233,7 +284,7 @@ class _BookingScreenState extends State<BookingScreen> {
                         ],
                       ),
                     if (token != null &&
-                        (categoryData?.id == null || doctorData?.id == null))
+                        (categoryName2 == null || doctorName2 == null))
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

@@ -232,7 +232,7 @@ Widget buildServiceItem(ServesData? data, context) => InkWell(
     );
 
 Widget buildCategoryItem(
-    String? img, String? name, int? id, Data? catData, context) {
+    String? img, String? name, int? id, CategoryData? catData, context) {
   return InkWell(
     onTap: () {
       AppCubit.get(context).getDoctorsData(id!);

@@ -83,3 +83,8 @@ class AppGetAboutUsDataSuccessState extends AppStates {}
 class AppGetAboutUsDataErrorState extends AppStates {}
 
 class AppGetAboutUsDataLoadingState extends AppStates {}
+
+//drop down lists
+class AppDoctorDropListSuccessState extends AppStates {}
+
+class AppCategoryDropListSuccessState extends AppStates {}
