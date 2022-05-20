@@ -45,7 +45,7 @@ class _BookingScreenDrawerState extends State<BookingScreenDrawer> {
           if (state.model.success == true) {
             showToast(text: 'تم الحجز بنجاح', state: ToastStates.success);
             navigateTo(context, LayoutScreen());
-          } else {
+          } else if (state is AppPostBookingErrorState) {
             showToast(
                 text: 'لم يتم الحجز الرجاء التأكد من البايانات المدخله',
                 state: ToastStates.error);

@@ -50,7 +50,7 @@ class _BookingScreenState extends State<BookingScreen> {
             AppCubit.get(context).categoriesNames2 = [];
             AppCubit.get(context).getCategoryData();
             navigateTo(context, LayoutScreen());
-          } else {
+          } else if (state is AppPostBookingErrorState) {
             showToast(
                 text: 'لم يتم الحجز الرجاء التأكد من البايانات المدخله',
                 state: ToastStates.error);
