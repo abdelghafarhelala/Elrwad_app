@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:alrwad/components/components.dart';
+import 'package:alrwad/main.dart';
 import 'package:alrwad/models/ContactUsModel/contactUsModel.dart';
 import 'package:alrwad/models/aboutUsModel/aboutUsModel.dart';
 import 'package:alrwad/models/bookingModel/bookingModel.dart';
@@ -10,7 +11,6 @@ import 'package:alrwad/models/mainServicesModel/mainServicesModel.dart';
 import 'package:alrwad/models/profileModel/profileModel.dart';
 import 'package:alrwad/models/sliderModel/sliderModel.dart';
 import 'package:alrwad/models/socialLinksModel/socialLinksModel.dart';
-import 'package:alrwad/models/userModel/userModel.dart';
 import 'package:alrwad/modules/bookingScreen/bookingScreen.dart';
 import 'package:alrwad/modules/contactUsScreen/contactUs.dart';
 import 'package:alrwad/modules/homePage/home.dart';
@@ -56,15 +56,20 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   var isDark = true;
-  void changeAppTheme({bool? fromCache}) {
+  void changeAppTheme({bool? fromCache}) async {
     if (fromCache != null) {
       isDark = fromCache;
       emit(AppChangeThemState());
     } else {
       isDark = !isDark;
-      CacheHelper.setBoolean(key: 'isDark', value: isDark).then((value) {
+      await storage
+          .write(key: 'isDark', value: isDark.toString())
+          .then((value) {
         emit(AppChangeThemState());
       });
+      // CacheHelper.setBoolean(key: 'isDark', value: isDark).then((value) {
+      //   emit(AppChangeThemState());
+      // });
     }
   }
 
@@ -109,9 +114,7 @@ class AppCubit extends Cubit<AppStates> {
       'subject': message,
       'message': 'a'
     }).then((value) {
-      print(value.data);
       contact = contactUsModel.fromJson(value.data);
-      print(contact?.errorMessage);
       emit(AppPostContactSuccessState(contact!));
     }).catchError((error) {
       emit(AppPostContactErrorState());
@@ -126,7 +129,6 @@ class AppCubit extends Cubit<AppStates> {
     emit(AppGetUserDataLoadingState());
     DioHelper.getData(url: profileUrl, token: token).then((value) {
       profile = ProfileModel.fromJson(value.data);
-      print(profile!.data!.name);
       emit(AppGetUserDataSuccessState());
     }).catchError((error) {
       emit(AppGetUserDataErrorState());
@@ -150,7 +152,6 @@ class AppCubit extends Cubit<AppStates> {
         }
       }
       doctorsLength = doctors!.results!.length;
-      print(doctorsData.length);
       emit(AppGetDoctorsSuccessState());
     }).catchError((error) {
       emit(AppGetCategoriesErrorState());
@@ -164,7 +165,6 @@ class AppCubit extends Cubit<AppStates> {
   void getMainServicesData() {
     emit(AppGetMainServicesLoadingState());
     DioHelper.getDataWithoutToken(url: mainServicesUrl).then((value) {
-      print(value.data);
       services = MainServicesModel.fromJson(value.data);
       // print(category?.data?[0].name);
       serviceLength = services!.data!.length;
@@ -196,7 +196,6 @@ class AppCubit extends Cubit<AppStates> {
     }).then((value) {
       book = BookingModel.fromJson(value.data);
       emit(AppPostBookingSuccessState(book!));
-      print(book!.success);
     }).catchError((error) {
       emit(AppPostBookingErrorState());
       print(error.toString());
@@ -208,7 +207,6 @@ class AppCubit extends Cubit<AppStates> {
   void getSocialData() {
     emit(AppGetSocialDataLoadingState());
     DioHelper.getDataWithoutToken(url: socialUrl).then((value) {
-      print(value.data);
       social = SocialLinksModel.fromJson(value.data);
       // print(category?.data?[0].name);
       socialLength = social!.socialMedia!.length;
@@ -219,14 +217,19 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
-  void logOut(context) {
-    CacheHelper.removeData(key: 'token').then((value) {
-      if (value) {
-        profile = null;
-        navigateAndFinish(context, const LoginScreen());
-        emit(AppLogoutSuccessState());
-      }
+  void logOut(context) async {
+    await storage.delete(key: 'token').then((value) {
+      profile = null;
+      navigateAndFinish(context, const LoginScreen());
+      emit(AppLogoutSuccessState());
     });
+    // CacheHelper.removeData(key: 'token').then((value) {
+    //   if (value) {
+    //     profile = null;
+    //     navigateAndFinish(context, const LoginScreen());
+    //     emit(AppLogoutSuccessState());
+    //   }
+    // });
   }
 
 //get slider data
@@ -235,7 +238,6 @@ class AppCubit extends Cubit<AppStates> {
   void getSliderData() {
     emit(AppGetSliderDataLoadingState());
     DioHelper.getDataWithoutToken(url: sliderUrl).then((value) {
-      print(value.data);
       slider = SliderModel.fromJson(value.data);
       // print(category?.data?[0].name);
       sliderLength = slider!.data!.length;
@@ -252,7 +254,6 @@ class AppCubit extends Cubit<AppStates> {
   void getAboutData() {
     emit(AppGetAboutUsDataLoadingState());
     DioHelper.getDataWithoutToken(url: aboutUsUrl).then((value) {
-      print(value.data);
       about = AboutUsModel.fromJson(value.data);
       // print(category?.data?[0].name);
       emit(AppGetAboutUsDataSuccessState());

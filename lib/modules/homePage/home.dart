@@ -1,6 +1,8 @@
+import 'package:admob_flutter/admob_flutter.dart';
 import 'package:alrwad/appCubit/app_cubit.dart';
 import 'package:alrwad/appCubit/app_states.dart';
 import 'package:alrwad/components/components.dart';
+import 'package:alrwad/models/ads_manger/ads_manger.dart';
 import 'package:alrwad/models/categoryModel/categoryModel.dart';
 import 'package:alrwad/models/mainServicesModel/mainServicesModel.dart';
 import 'package:alrwad/modules/categories/categories.dart';
@@ -16,9 +18,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 final List<String> imgList = [];
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late AdmobBannerSize admobBannerSize =
+      AdmobBannerSize(height: 80, width: double.infinity.toInt());
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit, AppStates>(
@@ -61,11 +70,14 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(
-                        height: 5,
+                        height: 3,
                       ),
                       buildSliderItem(),
                       const SizedBox(
-                        height: 10,
+                        height: 5,
+                      ),
+                      const SizedBox(
+                        height: 5,
                       ),
                       buildTextItem(
                           context: context,
@@ -151,7 +163,7 @@ Widget buildSliderItem() => Card(
             )
             .toList(),
         options: CarouselOptions(
-          height: 250,
+          height: 180,
           initialPage: 0,
           viewportFraction: 1,
           autoPlay: true,

@@ -31,19 +31,21 @@ dependencies:
     sdk: flutter
   flutter_localizations :
     sdk: flutter 
-  flutter_social_button: ^1.1.4
-  shared_preferences: ^2.0.13
-  flutter_bloc: ^8.0.1
-  flutter_switch: ^0.3.2
-  carousel_slider: ^4.0.0
-  dio: ^4.0.6
-  fluttertoast: ^8.0.9
-  conditional_builder_null_safety: ^0.0.6
-  smooth_page_indicator: ^1.0.0+2
-  flutter_lints: ^1.0.4
-  flutter_native_splash: ^2.2.0+1
-  email_validator: ^2.0.1
-  url_launcher: ^6.1.2
+  flutter_social_button: 
+  flutter_secure_storage: ^8.0.0
+  flutter_bloc: 
+  flutter_switch: 
+  carousel_slider: 
+  dio: 
+  fluttertoast: 
+  conditional_builder_null_safety: 
+  smooth_page_indicator: 
+  flutter_lints: 
+  flutter_native_splash: 
+  email_validator: 
+  url_launcher: 
+  google_mobile_ads: 
+  admob_flutter: 
 
 flutter_native_splash:
   color: "#f29024"

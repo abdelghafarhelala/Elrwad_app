@@ -1,11 +1,9 @@
 // ignore_for_file: avoid_print
 
-import 'package:alrwad/appCubit/app_cubit.dart';
+import 'package:alrwad/main.dart';
 import 'package:alrwad/models/userModel/userModel.dart';
 import 'package:alrwad/modules/login/loginCubit/loginStates.dart';
-
 import 'package:alrwad/network/endpoints.dart';
-import 'package:alrwad/network/local/cache_Helper.dart';
 import 'package:alrwad/network/remote/dio_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,9 +31,10 @@ class LoginCubit extends Cubit<LoginStates> {
       'mobile': phone,
       'password': password,
       'onesignal_id': '1',
-    }).then((value) {
+    }).then((value) async {
       loginModel = UserModel.fromJson(value.data);
-      CacheHelper.saveData(key: 'token', value: loginModel?.success?.token);
+      await storage.write(key: 'token', value: loginModel?.success?.token);
+      // CacheHelper.saveData(key: 'token', value: loginModel?.success?.token);
       emit(LoginSuccessState(loginModel));
     }).catchError((error) {
       print(error.toString());

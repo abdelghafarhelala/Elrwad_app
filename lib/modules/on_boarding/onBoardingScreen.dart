@@ -3,6 +3,7 @@
 import 'dart:ui';
 
 import 'package:alrwad/components/components.dart';
+import 'package:alrwad/main.dart';
 import 'package:alrwad/modules/layoutScreen/layoutScreen.dart';
 import 'package:alrwad/modules/login/login.dart';
 import 'package:alrwad/network/local/cache_Helper.dart';
@@ -56,12 +57,15 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   ];
 
   bool isLast = false;
-  void submit() {
-    CacheHelper.saveData(key: 'onBoarding', value: true).then((value) {
-      if (value) {
-        navigateAndFinish(context, LayoutScreen());
-      }
-    });
+  void submit() async {
+    await storage.write(key: 'onBoarding', value: 'true');
+    navigateAndFinish(context, LayoutScreen());
+
+    // CacheHelper.saveData(key: 'onBoarding', value: true).then((value) {
+    //   if (value) {
+    //     navigateAndFinish(context, LayoutScreen());
+    //   }
+    // });
   }
 
   @override
@@ -69,14 +73,15 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
+        elevation: 0,
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextButton(
                 child: Text(
-                  'Skip',
+                  'تخطي',
                   style: TextStyle(
-                    fontSize: 20.0,
+                    fontSize: 18.0,
                     color: primaryColor,
                   ),
                 ),

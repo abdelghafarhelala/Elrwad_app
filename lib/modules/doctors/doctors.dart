@@ -42,6 +42,7 @@ class DoctorsScreen extends StatelessWidget {
               fallback: (context) =>
                   const Center(child: CircularProgressIndicator()),
               builder: (context) => ListView.separated(
+                physics: const BouncingScrollPhysics(),
                 itemBuilder: (context, index) {
                   return buildDoctorItem(
                     context,
@@ -62,7 +63,7 @@ class DoctorsScreen extends StatelessWidget {
 
 Widget buildDoctorItem(context, Results data, CategoryData? cDate) => InkWell(
       onTap: () {
-        CacheHelper.sharedPreferences.setInt('doctorId', data.id!);
+        // CacheHelper.sharedPreferences.setInt('doctorId', data.id!);
         navigateTo(
             context,
             BookingScreenDrawer(
@@ -73,7 +74,7 @@ Widget buildDoctorItem(context, Results data, CategoryData? cDate) => InkWell(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Card(
-          elevation: 7,
+          elevation: 3,
           clipBehavior: Clip.antiAliasWithSaveLayer,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -132,11 +133,13 @@ Widget buildDoctorItem(context, Results data, CategoryData? cDate) => InkWell(
                           const SizedBox(
                             width: 10,
                           ),
-                          Text(
-                            data.appointments!,
-                            style: Theme.of(context).textTheme.caption,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
+                          Expanded(
+                            child: Text(
+                              data.appointments!,
+                              style: Theme.of(context).textTheme.caption,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         ],
                       ),

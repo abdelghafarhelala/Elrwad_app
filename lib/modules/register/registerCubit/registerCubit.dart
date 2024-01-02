@@ -1,9 +1,8 @@
 // ignore_for_file: avoid_print
-
+import 'package:alrwad/main.dart';
 import 'package:alrwad/models/userModel/userModel.dart';
 import 'package:alrwad/modules/register/registerCubit/registerStates.dart';
 import 'package:alrwad/network/endpoints.dart';
-import 'package:alrwad/network/local/cache_Helper.dart';
 import 'package:alrwad/network/remote/dio_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,10 +37,11 @@ class RegisterCubit extends Cubit<RegisterStates> {
       'name': name,
       'password': password,
       'c_password': confirmPassword,
-    }).then((value) {
+    }).then((value) async {
       registerModel = UserModel.fromJson(value.data);
       // print(registerModel!.data!.name);
-      CacheHelper.saveData(key: 'token', value: registerModel?.success?.token);
+      await storage.write(key: 'token', value: registerModel?.success?.token);
+      // CacheHelper.saveData(key: 'token', value: registerModel?.success?.token);
       emit(RegisterSuccessState(registerModel));
     }).catchError((error) {
       print(error.toString());

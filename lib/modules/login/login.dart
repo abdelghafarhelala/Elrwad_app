@@ -1,14 +1,11 @@
 import 'package:alrwad/appCubit/app_cubit.dart';
 import 'package:alrwad/components/components.dart';
-import 'package:alrwad/modules/categories/categories.dart';
+import 'package:alrwad/main.dart';
 import 'package:alrwad/modules/layoutScreen/layoutScreen.dart';
 
 import 'package:alrwad/modules/login/loginCubit/loginCubit.dart';
 import 'package:alrwad/modules/login/loginCubit/loginStates.dart';
-import 'package:alrwad/modules/mainService/mainServiceScreen.dart';
 import 'package:alrwad/modules/register/register.dart';
-import 'package:alrwad/network/local/cache_Helper.dart';
-import 'package:alrwad/shared/colors.dart';
 import 'package:alrwad/shared/const.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
@@ -25,19 +22,28 @@ class LoginScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => LoginCubit(),
       child: BlocConsumer<LoginCubit, LoginStates>(
-        listener: (context, state) {
+        listener: (context, state) async {
           if (state is LoginSuccessState) {
             if (state.model?.result == true) {
-              CacheHelper.saveData(
-                      key: "token", value: state.model?.success?.token)
+              await storage
+                  .write(key: "token", value: state.model?.success?.token)
                   .then((value) {
                 token = state.model?.success?.token;
                 navigateAndFinish(context, LayoutScreen());
                 AppCubit.get(context).getUserData();
                 showToast(
                     text: 'تم تسجيل الدخول بنجاح', state: ToastStates.success);
-                // print(state.model?.data!.name);
               });
+              // CacheHelper.saveData(
+              //         key: "token", value: state.model?.success?.token)
+              //     .then((value) {
+              //   token = state.model?.success?.token;
+              //   navigateAndFinish(context, LayoutScreen());
+              //   AppCubit.get(context).getUserData();
+              //   showToast(
+              //       text: 'تم تسجيل الدخول بنجاح', state: ToastStates.success);
+              //   // print(state.model?.data!.name);
+              // });
             } else {
               showToast(
                   text: state.model?.error_message, state: ToastStates.error);

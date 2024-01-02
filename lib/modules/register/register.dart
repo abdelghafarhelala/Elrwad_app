@@ -1,5 +1,6 @@
 import 'package:alrwad/appCubit/app_cubit.dart';
 import 'package:alrwad/components/components.dart';
+import 'package:alrwad/main.dart';
 import 'package:alrwad/modules/layoutScreen/layoutScreen.dart';
 import 'package:alrwad/modules/login/login.dart';
 import 'package:alrwad/modules/register/registerCubit/registerCubit.dart';
@@ -25,19 +26,28 @@ class RegisterScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => RegisterCubit(),
       child: BlocConsumer<RegisterCubit, RegisterStates>(
-        listener: (context, state) {
+        listener: (context, state) async {
           if (state is RegisterSuccessState) {
             if (state.model?.result == true) {
-              CacheHelper.saveData(
-                      key: "token", value: state.model?.success!.token)
+              await storage
+                  .write(key: "token", value: state.model?.success!.token)
                   .then((value) {
                 token = state.model?.success?.token;
                 AppCubit.get(context).getUserData();
                 showToast(
                     text: 'تم تسجيل الدخول بنجاح', state: ToastStates.success);
                 navigateAndFinish(context, LayoutScreen());
-                print(state.model?.data!.name);
               });
+              // CacheHelper.saveData(
+              //         key: "token", value: state.model?.success!.token)
+              //     .then((value) {
+              //   token = state.model?.success?.token;
+              //   AppCubit.get(context).getUserData();
+              //   showToast(
+              //       text: 'تم تسجيل الدخول بنجاح', state: ToastStates.success);
+              //   navigateAndFinish(context, LayoutScreen());
+              //   print(state.model?.data!.name);
+              // });
             } else {
               showToast(
                   text: state.model?.error_message, state: ToastStates.error);
